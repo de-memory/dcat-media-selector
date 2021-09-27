@@ -22,7 +22,7 @@ class DcatMediaSelectorServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'dcat-media-selector');
         $this->publishes([__DIR__ . '/../updates' => database_path('migrations')], 'dcat-media-selector-migrations');
-        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/de-memory/dcat-media-selector')], 'dcat-media-selector-assets');
+        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/dcat-admin-extensions/de-memory/dcat-media-selector')], 'dcat-media-selector-assets');
     }
 
     public function register()
