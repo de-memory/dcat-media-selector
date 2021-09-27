@@ -34,7 +34,7 @@ composer require de-memory/dcat-media-selector
 ### 执行该扩展迁移文件
 
 ```
-php artisan migrate --path=dcat-admin-extensions/de-memory/dcat-media-selector/updates
+php artisan migrate --path=vendor/de-memory/dcat-media-selector/updates
 ```
 
 ### 将根目录下面的文件同步到数据库(可以不执行。如果执行会去掉数据库已有的，根据path字段过滤)
@@ -134,5 +134,5 @@ https://learnku.com/docs/laravel/7.x/eloquent-mutators/7502#81e641
 ## 回滚该扩展迁移文件。(谨慎操作)
 
 ```
-php artisan migrate:rollback --path=dcat-admin-extensions/de-memory/dcat-media-selector/updates
+php artisan migrate:rollback --path=vendor/de-memory/dcat-media-selector/updates
 ```
