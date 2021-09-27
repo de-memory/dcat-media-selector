@@ -8,8 +8,8 @@
     <a><img src="https://img.shields.io/badge/laravel-7.29+-59a9f8.svg?style=flat" ></a>
 </p>
 
-![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/main/1.png)
-![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/main/2.png)
+![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/1.png)
+![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/2.png)
 
 ## 依赖
  
