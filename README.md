@@ -1,4 +1,4 @@
-# dcat-admin 媒体资源选择器
+# dcat-admin 表单媒体资源选择器
 
 <p align="center">
     <a href="https://packagist.org/packages/de-memory/dcat-media-selector">

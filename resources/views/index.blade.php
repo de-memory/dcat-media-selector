@@ -116,19 +116,19 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button type="button" class="btn btn-primary btn-outline {{$elementClass}}refresh">
+                            <button type="button" class="btn btn btn-outline-custom {{$elementClass}}refresh">
                                 <i class="feather icon-refresh-cw"></i> {{__('admin.refresh')}}
                             </button>
-                            <button type="button" class="btn btn-primary  btn-outline {{$elementClass}}filter">
+                            <button type="button" class="btn btn btn-outline-custom {{$elementClass}}filter">
                                 <i class="feather icon-filter"></i> {{__('admin.filter')}}
                             </button>
                             @if($length >1)
-                                <button type="button" class="btn btn-outline-danger {{$elementClass}}choose">
+                                <button type="button" class="btn btn btn-outline-custom {{$elementClass}}choose">
                                     <i class="fa fa-check"></i> {{__('admin.choose')}}
                                 </button>
                             @endif
                             <span style="position: relative;">
-                                <label class="btn btn-outline-warning">
+                                <label class="btn btn-outline-success">
                                     <i class="fa fa-upload"></i> {{__('admin.upload')}}
                                     <span id="{{$elementClass}}modal_percent"></span>
                                     <input type="file" id="{{$elementClass}}modal_upload" multiple
