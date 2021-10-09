@@ -155,6 +155,6 @@
     </div>
 </div>
 
-<script init="{{ $selector }}" require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }}">
+<script init="{{ $selector }}" require="@de-memory.dcat-media-selector,@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }}">
     new MediaSelector({!! $config !!}, '{{ $locale }}', {!! $lang !!}).init();
 </script>
