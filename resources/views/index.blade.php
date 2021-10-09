@@ -154,3 +154,7 @@
         </select>
     </div>
 </div>
+
+<script init="{{ $selector }}" require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }}">
+    new MediaSelector({!! $config !!}, '{{ $locale }}', {!! $lang !!}).init();
+</script>

@@ -29,5 +29,6 @@
                 "DeMemory\\DcatMediaSelector\\DcatMediaSelectorServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "beta"
 }

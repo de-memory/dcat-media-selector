@@ -3,14 +3,7 @@
 
 namespace DeMemory\DcatMediaSelector;
 
-
-use App\Admin\Renderable\UserTable;
-use Dcat\Admin\Form;
 use Dcat\Admin\Form\Field;
-use Dcat\Admin\Form\Field\CanLoadFields;
-use Dcat\Admin\Form\Field\PlainInput;
-use Dcat\Admin\Widgets\DialogTable;
-use Dcat\Admin\Widgets\Modal;
 use DeMemory\DcatMediaSelector\Models\MediaGroup;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,9 +35,9 @@ class MediaSelector extends Field
         // 文件存储的根目录
         $rootPath = Storage::disk(config('admin.upload.disk'))->url('');
 
-        $length = isset($this->options['length']) && !empty($this->options['length']) ? $this->options['length'] : 1;
+        $length = isset($this->options['length']) && ! empty($this->options['length']) ? $this->options['length'] : 1;
 
-        $type = isset($this->options['type']) && !empty($this->options['type']) ? $this->options['type'] : 'blend';
+        $type = isset($this->options['type']) && ! empty($this->options['type']) ? $this->options['type'] : 'blend';
 
         $locale = config('admin.lang');
 
@@ -74,16 +67,6 @@ class MediaSelector extends Field
 
         $lang = json_encode($lang);
 
-        // 向视图添加变量
-        $this->addVariables([
-            'length' => $length,
-            'rootPath' => $rootPath,
-            'type' => $type,
-            'grouplist' => $grouplist,
-            'selectList' => $this->selectList,
-            'elementClass' => $this->getDefaultElementClass()[0],
-        ]);
-
         /**
          * elementLabel | 元素Name
          * storePath | 媒体存储的路径
@@ -106,7 +89,7 @@ class MediaSelector extends Field
         $config = array_merge(
             [
                 'rootPath' => $rootPath,
-                'elementClass' => $this->getDefaultElementClass()[0],
+                'elementClass' => $this->getElementClass(),
                 'storePath' => 'upload_files',
                 'fileNameIsEncrypt' => true,
                 'length' => $length,
@@ -120,15 +103,18 @@ class MediaSelector extends Field
         $config = json_encode($config);
 
 
-        $elementName = 'media_selector' . $this->getDefaultElementClass()[0];
-        $script = <<<SCRIPT
-if(!window.$elementName){
-   window.$elementName = new MediaSelector($config,'$locale',$lang).init();
-}
-SCRIPT;
+        // 向视图添加变量
+        $this->addVariables([
+            'length' => $length,
+            'rootPath' => $rootPath,
+            'type' => $type,
+            'grouplist' => $grouplist,
+            'selectList' => $this->selectList,
+            'config' => $config,
+            'locale' => $locale,
+            'lang' => $lang,
+        ]);
 
-
-        $this->script = $script;
         return parent::render();
     }
 }
