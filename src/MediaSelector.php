@@ -11,22 +11,22 @@ class MediaSelector extends Field
 {
     protected $view = 'dcat-media-selector::index';
 
-    protected $selectList = [
-        'image' => '图片',
-        'video' => '视频',
-        'audio' => '音频',
-        'powerpoint' => '文稿',
-        'code' => '代码',
-        'zip' => '压缩包',
-        'text' => '文本选择',
-        'other' => '其它',
-    ];
+    protected $selectList;
 
     public function __construct($column, $arguments = [])
     {
         parent::__construct($column, $arguments);
 
-        $this->selectList = DcatMediaSelectorServiceProvider::trans('media.type');
+        $this->selectList = DcatMediaSelectorServiceProvider::trans('media.type') ?: [
+            'image' => '图片',
+            'video' => '视频',
+            'audio' => '音频',
+            'powerpoint' => '文稿',
+            'code' => '代码',
+            'zip' => '压缩包',
+            'text' => '文本选择',
+            'other' => '其它',
+        ];
     }
 
     public function length(int $length = 1)
