@@ -55,7 +55,7 @@ class MediaSelector extends Field
      */
     public function fileType(string $filetype)
     {
-        if (! in_array($filetype, array_keys($this->selectList))) {
+        if ($filetype !== 'blend' && ! in_array($filetype, array_keys($this->selectList))) {
             $filetype = 'blend';
         }
         return $this->options(['type' => $filetype]);
