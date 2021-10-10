@@ -29,6 +29,43 @@ class MediaSelector extends Field
         $this->selectList = DcatMediaSelectorServiceProvider::trans('media.type');
     }
 
+    public function length(int $length = 1)
+    {
+        return $this->options(['length' => $length]);
+    }
+
+    public function move(string $dir, bool $fileNameIsEncrypt = true)
+    {
+        return $this->options(['move' => json_encode(['dir' => $dir, 'fileNameIsEncrypt' => $fileNameIsEncrypt])]);
+    }
+
+    /**
+     *--------------------------------------------------------------------------
+     * 媒体选择类型。默认blend
+     *--------------------------------------------------------------------------
+     * blend            混合选择
+     * image            图片选择
+     * video            视频选择
+     * audio            音频选择
+     * powerpoint       文稿选择
+     * code             代码文件选择
+     * zip              压缩包选择
+     * text             文本选择
+     * other            其他选择
+     */
+    public function fileType(string $filetype)
+    {
+        if (! in_array($filetype, array_keys($this->selectList))) {
+            $filetype = 'blend';
+        }
+        return $this->options(['type' => $filetype]);
+    }
+
+    public function sortable(bool $sortable = true)
+    {
+        return $this->options(['sortable' => $sortable]);
+    }
+
     public function render()
     {
 
