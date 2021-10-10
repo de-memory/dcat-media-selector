@@ -78,6 +78,8 @@ class MediaSelector extends Field
 
         $locale = config('admin.lang');
 
+        $elementClass = $this->getDefaultElementClass()[0];
+
         $lang = [
             'grid_items_selected' => __('admin.grid_items_selected'),
             'preview' => DcatMediaSelectorServiceProvider::trans('media.preview'),
@@ -126,7 +128,7 @@ class MediaSelector extends Field
         $config = array_merge(
             [
                 'rootPath' => $rootPath,
-                'elementClass' => $this->getElementClass(),
+                'elementClass' => $elementClass,
                 'storePath' => 'upload_files',
                 'fileNameIsEncrypt' => true,
                 'length' => $length,
@@ -147,6 +149,7 @@ class MediaSelector extends Field
             'type' => $type,
             'grouplist' => $grouplist,
             'selectList' => $this->selectList,
+            'elementClass' => $elementClass,
             'config' => $config,
             'locale' => $locale,
             'lang' => $lang,
