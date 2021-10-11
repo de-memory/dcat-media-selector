@@ -423,31 +423,33 @@
                 $('.' + _this.config.elementClass).val() ? $('.' + _this.config.elementClass).val($('.' + _this.config.elementClass).val() + ',' + data.data.path) : $('.' + _this.config.elementClass).val(data.data.path);
             }
             var html = '<li class="list-inline-item">';
-            html += '<a href="' + data.data.path_url + '" target="_blank" title="' + _this.langs.view + '">';
             if (data.data.media_type === 'image') {
-                html += '<img class="img-thumbnail" src="' + data.data.path_url + '">';
-            } else if (data.data.media_type === 'video') {
-                html += '<video class="img-thumbnail" src="' + data.data.path_url + '"></video>';
-            } else if (data.data.media_type === 'audio') {
-                html += '<i class="fa fa-file-audio-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
-            } else if (data.data.media_type === 'powerpoint') {
-                html += '<i class="fa fa-file-word-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
-            } else if (data.data.media_type === 'code') {
-                html += '<i class="fa fa-file-code-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
-            } else if (data.data.media_type === 'zip') {
-                html += '<div class="img-thumbnail" ><i class="fa fa-file-zip-o modal_my_fa"></i></div>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
-            } else if (data.data.media_type === 'text') {
-                html += '<i class="fa fa-file-text-o img-thumbnail modal_my_fa modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
-            } else if (data.data.media_type === 'other') {
-                html += '<i class="fa fa-file img-thumbnail modal_my_fa" ></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<img data-action="preview-img" class="img-thumbnail" src="' + data.data.path_url + '">';
+            } else{
+                html += '<a href="' + data.data.path_url + '" target="_blank" title="' + _this.langs.view + '">';
+                if (data.data.media_type === 'video') {
+                    html += '<video class="img-thumbnail" src="' + data.data.path_url + '"></video>';
+                } else if (data.data.media_type === 'audio') {
+                    html += '<i class="fa fa-file-audio-o img-thumbnail modal_my_fa"></i>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                } else if (data.data.media_type === 'powerpoint') {
+                    html += '<i class="fa fa-file-word-o img-thumbnail modal_my_fa"></i>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                } else if (data.data.media_type === 'code') {
+                    html += '<i class="fa fa-file-code-o img-thumbnail modal_my_fa"></i>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                } else if (data.data.media_type === 'zip') {
+                    html += '<div class="img-thumbnail" ><i class="fa fa-file-zip-o modal_my_fa"></i></div>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                } else if (data.data.media_type === 'text') {
+                    html += '<i class="fa fa-file-text-o img-thumbnail modal_my_fa modal_my_fa"></i>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                } else if (data.data.media_type === 'other') {
+                    html += '<i class="fa fa-file img-thumbnail modal_my_fa" ></i>';
+                    html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                }
+                html += '</a>';
             }
-            html += '</a>';
             html += '<button type="button" class="btn btn-block btn-danger btn-xs remove_media_display">';
             html += '<i class="fa fa-trash"></i>';
             html += '</button>';
