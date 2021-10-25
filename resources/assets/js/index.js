@@ -691,7 +691,7 @@
                 type: 2,
                 shade: 0.2,
                 shadeClose: true,
-                title: '预览',
+                title: this.langs.preview,
                 skin: 'layer-preview-code',
                 content: url
             });
@@ -706,7 +706,7 @@
                 type: 2,
                 shade: 0.2,
                 shadeClose: true,
-                title: '预览',
+                title: this.langs.preview,
                 skin: 'layer-preview-text',
                 content: url
             });
