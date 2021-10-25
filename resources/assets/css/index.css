@@ -60,14 +60,14 @@
     border-radius: 10px;
     background-color: skyblue;
     background-image: -webkit-linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.2) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 0.2) 50%,
-            rgba(255, 255, 255, 0.2) 75%,
-            transparent 75%,
-            transparent
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
     );
 }
 
@@ -84,4 +84,47 @@
 
 .dropdown .dropdown-menu:before {
     top: initial;
+}
+
+.mediaselector-preview {
+    cursor: pointer;
+}
+
+.layer-preview-video .layui-layer-content {
+    height: 100% !important;
+    overflow: hidden;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.layer-preview-video .layui-layer-setwin .layui-layer-close2 {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    right: auto;
+    top: 3px;
+}
+
+.layer-preview-video .layui-layer-setwin .layui-layer-close2:before {
+    font-family: feather;
+    content: "\E8F6";
+    font-size: 1.1rem;
+}
+
+.layer-preview-audio.layui-layer-page {
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 0 !important;
+}
+
+.layer-preview-audio.layui-layer-page .layui-layer-content {
+    padding: 0;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }

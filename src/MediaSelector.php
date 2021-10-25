@@ -29,9 +29,9 @@ class MediaSelector extends Field
         ];
     }
 
-    public function length(int $length = 1)
+    public function limit(int $limit = 1)
     {
-        return $this->options(['length' => $length]);
+        return $this->options(['length' => $limit]);
     }
 
     public function move(string $dir, bool $fileNameIsEncrypt = true)
@@ -99,7 +99,9 @@ class MediaSelector extends Field
             'Q_TYPE_DENIED' => __('admin.uploader.Q_TYPE_DENIED'),
             'Q_TYPE_DENIED_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_TYPE_DENIED_1'),
             'Q_EXCEED_NUM_LIMIT' => __('admin.uploader.Q_EXCEED_NUM_LIMIT'),
-            'Q_EXCEED_NUM_LIMIT_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_NUM_LIMIT_1')
+            'Q_EXCEED_NUM_LIMIT_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_NUM_LIMIT_1'),
+            'preview_video_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_video.unsupported'),
+            'preview_audio_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_audio.unsupported'),
         ];
 
         $grouplist = MediaGroup::query()->pluck('name', 'id');
