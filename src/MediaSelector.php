@@ -3,14 +3,7 @@
 
 namespace DeMemory\DcatMediaSelector;
 
-
-use App\Admin\Renderable\UserTable;
-use Dcat\Admin\Form;
 use Dcat\Admin\Form\Field;
-use Dcat\Admin\Form\Field\CanLoadFields;
-use Dcat\Admin\Form\Field\PlainInput;
-use Dcat\Admin\Widgets\DialogTable;
-use Dcat\Admin\Widgets\Modal;
 use DeMemory\DcatMediaSelector\Models\MediaGroup;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,22 +11,59 @@ class MediaSelector extends Field
 {
     protected $view = 'dcat-media-selector::index';
 
-    protected $selectList = [
-        'image' => '图片',
-        'video' => '视频',
-        'audio' => '音频',
-        'powerpoint' => '文稿',
-        'code' => '代码',
-        'zip' => '压缩包',
-        'text' => '文本选择',
-        'other' => '其它',
-    ];
+    protected $selectList;
 
     public function __construct($column, $arguments = [])
     {
         parent::__construct($column, $arguments);
 
-        $this->selectList = DcatMediaSelectorServiceProvider::trans('media.type');
+        $this->selectList = DcatMediaSelectorServiceProvider::trans('media.type') ?: [
+            'image' => '图片',
+            'video' => '视频',
+            'audio' => '音频',
+            'powerpoint' => '文稿',
+            'code' => '代码',
+            'zip' => '压缩包',
+            'text' => '文本选择',
+            'other' => '其它',
+        ];
+    }
+
+    public function limit(int $limit = 1)
+    {
+        return $this->options(['length' => $limit]);
+    }
+
+    public function move(string $dir, bool $fileNameIsEncrypt = true)
+    {
+        return $this->options(['move' => json_encode(['dir' => $dir, 'fileNameIsEncrypt' => $fileNameIsEncrypt])]);
+    }
+
+    /**
+     *--------------------------------------------------------------------------
+     * 媒体选择类型。默认blend
+     *--------------------------------------------------------------------------
+     * blend            混合选择
+     * image            图片选择
+     * video            视频选择
+     * audio            音频选择
+     * powerpoint       文稿选择
+     * code             代码文件选择
+     * zip              压缩包选择
+     * text             文本选择
+     * other            其他选择
+     */
+    public function fileType(string $filetype)
+    {
+        if ($filetype !== 'blend' && ! in_array($filetype, array_keys($this->selectList))) {
+            $filetype = 'blend';
+        }
+        return $this->options(['type' => $filetype]);
+    }
+
+    public function sortable(bool $sortable = true)
+    {
+        return $this->options(['sortable' => $sortable]);
     }
 
     public function render()
@@ -42,11 +72,13 @@ class MediaSelector extends Field
         // 文件存储的根目录
         $rootPath = Storage::disk(config('admin.upload.disk'))->url('');
 
-        $length = isset($this->options['length']) && !empty($this->options['length']) ? $this->options['length'] : 1;
+        $length = isset($this->options['length']) && ! empty($this->options['length']) ? $this->options['length'] : 1;
 
-        $type = isset($this->options['type']) && !empty($this->options['type']) ? $this->options['type'] : 'blend';
+        $type = isset($this->options['type']) && ! empty($this->options['type']) ? $this->options['type'] : 'blend';
 
         $locale = config('admin.lang');
+
+        $elementClass = $this->getDefaultElementClass()[0];
 
         $lang = [
             'grid_items_selected' => __('admin.grid_items_selected'),
@@ -67,22 +99,14 @@ class MediaSelector extends Field
             'Q_TYPE_DENIED' => __('admin.uploader.Q_TYPE_DENIED'),
             'Q_TYPE_DENIED_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_TYPE_DENIED_1'),
             'Q_EXCEED_NUM_LIMIT' => __('admin.uploader.Q_EXCEED_NUM_LIMIT'),
-            'Q_EXCEED_NUM_LIMIT_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_NUM_LIMIT_1')
+            'Q_EXCEED_NUM_LIMIT_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_NUM_LIMIT_1'),
+            'preview_video_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_video.unsupported'),
+            'preview_audio_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_audio.unsupported'),
         ];
 
         $grouplist = MediaGroup::query()->pluck('name', 'id');
 
         $lang = json_encode($lang);
-
-        // 向视图添加变量
-        $this->addVariables([
-            'length' => $length,
-            'rootPath' => $rootPath,
-            'type' => $type,
-            'grouplist' => $grouplist,
-            'selectList' => $this->selectList,
-            'elementClass' => $this->getDefaultElementClass()[0],
-        ]);
 
         /**
          * elementLabel | 元素Name
@@ -106,7 +130,7 @@ class MediaSelector extends Field
         $config = array_merge(
             [
                 'rootPath' => $rootPath,
-                'elementClass' => $this->getDefaultElementClass()[0],
+                'elementClass' => $elementClass,
                 'storePath' => 'upload_files',
                 'fileNameIsEncrypt' => true,
                 'length' => $length,
@@ -120,15 +144,19 @@ class MediaSelector extends Field
         $config = json_encode($config);
 
 
-        $elementName = 'media_selector' . $this->getDefaultElementClass()[0];
-        $script = <<<SCRIPT
-if(!window.$elementName){
-   window.$elementName = new MediaSelector($config,'$locale',$lang).init();
-}
-SCRIPT;
+        // 向视图添加变量
+        $this->addVariables([
+            'length' => $length,
+            'rootPath' => $rootPath,
+            'type' => $type,
+            'grouplist' => $grouplist,
+            'selectList' => $this->selectList,
+            'elementClass' => $elementClass,
+            'config' => $config,
+            'locale' => $locale,
+            'lang' => $lang,
+        ]);
 
-
-        $this->script = $script;
         return parent::render();
     }
 }

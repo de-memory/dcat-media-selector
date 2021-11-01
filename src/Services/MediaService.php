@@ -41,7 +41,7 @@ class MediaService
                 'media_group_name' => empty($value->mediaGroup) ? '无' : $value->mediaGroup->name,
                 'media_type' => $value->type,
                 'path' => $value->path,
-                'path_url' => Storage::disk(config('admin.upload.disk'))->url($value->path),
+                'url' => Storage::disk(config('admin.upload.disk'))->url($value->path),
                 'size' => FileUtil::getFormatBytes($value->size),
                 'file_ext' => $value->file_ext,
                 'name' => $value->file_name,

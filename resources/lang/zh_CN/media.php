@@ -23,4 +23,10 @@ return [
         'Q_TYPE_DENIED_1' => '对不起，不允许选择此类型文件',
         'Q_EXCEED_NUM_LIMIT_1' => '对不起，已超出文件数量限制',
     ],
+    'preview_video' => [
+        'unsupported' => '您的浏览器不支持播放该视频！',
+    ],
+    'preview_audio' => [
+        'unsupported' => '您的浏览器不支持播放该音频！',
+    ],
 ];

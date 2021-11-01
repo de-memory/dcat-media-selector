@@ -205,6 +205,46 @@
             $('.' + _this.config.elementClass + 'modal').on('hidden.bs.modal', function () {
                 layer.closeAll();
             });
+            // 预览图片
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-image"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-image"]', function () {
+                    Dcat.helpers.previewImage($(this).data('url'));
+                });
+            // 预览视频
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-video"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-video"]', function () {
+                    _this.previewVideo($(this).data('url'));
+                });
+            // 预览音频
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-audio"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-audio"]', function () {
+                    _this.previewAudio($(this).data('url'));
+                });
+            // 预览powerpoint
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-powerpoint"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-powerpoint"]', function () {
+                    _this.previewPowerpoint($(this).data('url'));
+                });
+            // 预览代码
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-code"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-code"]', function () {
+                    _this.previewCode($(this).data('url'));
+                });
+            // 预览压缩包
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-zip"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-zip"]', function () {
+                    _this.previewZip($(this).data('url'));
+                });
+            // 预览文本
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-text"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-text"]', function () {
+                    _this.previewText($(this).data('url'));
+                });
+            // 预览其他
+            $(document).off('click.mediaselector', '[data-action="mediaselector-preview-other"]')
+                .on('click.mediaselector', '[data-action="mediaselector-preview-other"]', function () {
+                    _this.previewOther($(this).data('url'));
+                });
             var value = $('.' + this.config.elementClass).val();
             // // 获取name值后将input清空，防止叠加
             $('.' + this.config.elementClass).val('');
@@ -216,7 +256,7 @@
                     _this.fileDisplay({
                         data: {
                             path: arr[i],
-                            path_url: _this.config.rootPath + arr[i],
+                            url: _this.config.rootPath + arr[i],
                             media_type: fileType
                         }
                     });
@@ -250,23 +290,23 @@
                     {field: 'id', title: 'ID', sortable: true, visible: false},
                     {
                         title: _this.langs.preview, formatter: function (value, row) {
-                            var html = '<a href="' + row.path_url + '" target="_blank" title="' + _this.langs.view + '">';
+                            var html = '<a href="javascript:;" title="' + _this.langs.view + '">';
                             if (row.media_type === 'image') {
-                                html += '<img class="img-thumbnail modal-img-thumbnail " src="' + row.path_url + '">';
+                                html += '<img class="img-thumbnail modal-img-thumbnail " src="' + row.url + '" data-action="mediaselector-preview-image" data-url="' + row.url + '">';
                             } else if (row.media_type === 'video') {
-                                html += '<video class="img-thumbnail modal-img-thumbnail" src="' + row.path_url + '"> </video>';
+                                html += '<video class="img-thumbnail modal-img-thumbnail" src="' + row.url + '" data-action="mediaselector-preview-video" data-url="' + row.url + '"> </video>';
                             } else if (row.media_type === 'audio') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-audio-o my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-audio-o my_fa" data-action="mediaselector-preview-audio" data-url="' + row.url + '"></i></div>';
                             } else if (row.media_type === 'powerpoint') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-word-o my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-word-o my_fa" data-action="mediaselector-preview-powerpoint" data-url="' + row.url + '"></i></div>';
                             } else if (row.media_type === 'code') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-code-o my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-code-o my_fa" data-action="mediaselector-preview-code" data-url="' + row.url + '"></i></div>';
                             } else if (row.media_type === 'zip') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-zip-o my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-zip-o my_fa" data-action="mediaselector-preview-zip" data-url="' + row.url + '"></i></div>';
                             } else if (row.media_type === 'text') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-text-o my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file-text-o my_fa" data-action="mediaselector-preview-text" data-url="' + row.url + '"></i></div>';
                             } else if (row.media_type === 'other') {
-                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file my_fa"></i></div>';
+                                html += '<div class="img-thumbnail modal-img-thumbnail" ><i class="fa fa-file my_fa" data-action="mediaselector-preview-other" data-url="' + row.url + '"></i></div>';
                             }
                             html += '</a>';
                             return html;
@@ -423,29 +463,23 @@
                 $('.' + _this.config.elementClass).val() ? $('.' + _this.config.elementClass).val($('.' + _this.config.elementClass).val() + ',' + data.data.path) : $('.' + _this.config.elementClass).val(data.data.path);
             }
             var html = '<li class="list-inline-item">';
-            html += '<a href="' + data.data.path_url + '" target="_blank" title="' + _this.langs.view + '">';
+            html += '<a href="javascript:;" title="' + _this.langs.view + '">';
             if (data.data.media_type === 'image') {
-                html += '<img class="img-thumbnail" src="' + data.data.path_url + '">';
+                html += '<img class="img-thumbnail mediaselector-preview" src="' + data.data.url + '" data-action="mediaselector-preview-image" data-url="' + data.data.url + '">';
             } else if (data.data.media_type === 'video') {
-                html += '<video class="img-thumbnail" src="' + data.data.path_url + '"></video>';
+                html += '<video class="img-thumbnail mediaselector-preview" src="' + data.data.url + '" data-action="mediaselector-preview-video" data-url="' + data.data.url + '"></video>';
             } else if (data.data.media_type === 'audio') {
-                html += '<i class="fa fa-file-audio-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<i class="fa fa-file-audio-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-audio" data-url="' + data.data.url + '"></i>';
             } else if (data.data.media_type === 'powerpoint') {
-                html += '<i class="fa fa-file-word-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<i class="fa fa-file-word-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-powerpoint" data-url="' + data.data.url + '"></i>';
             } else if (data.data.media_type === 'code') {
-                html += '<i class="fa fa-file-code-o img-thumbnail modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<i class="fa fa-file-code-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-code" data-url="' + data.data.url + '"></i>';
             } else if (data.data.media_type === 'zip') {
-                html += '<div class="img-thumbnail" ><i class="fa fa-file-zip-o modal_my_fa"></i></div>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<div class="img-thumbnail mediaselector-preview" ><i class="fa fa-file-zip-o modal_my_fa" data-action="mediaselector-preview-zip" data-url="' + data.data.url + '"></i></div>';
             } else if (data.data.media_type === 'text') {
-                html += '<i class="fa fa-file-text-o img-thumbnail modal_my_fa modal_my_fa"></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<i class="fa fa-file-text-o img-thumbnail modal_my_fa modal_my_fa mediaselector-preview" data-action="mediaselector-preview-text" data-url="' + data.data.url + '"></i>';
             } else if (data.data.media_type === 'other') {
-                html += '<i class="fa fa-file img-thumbnail modal_my_fa" ></i>';
-                html += '<video src="' + data.data.path_url + '" style="display: none"></video>';
+                html += '<i class="fa fa-file img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-other" data-url="' + data.data.url + '"></i>';
             }
             html += '</a>';
             html += '<button type="button" class="btn btn-block btn-danger btn-xs remove_media_display">';
@@ -467,25 +501,18 @@
         // 获取预览区媒体值，重新组装
         MediaSelector.prototype.getInputMedia = function () {
             var _this = this;
-            var src = '';
             // 循环获取属性下面的img/video src 值
-            $.each($('.' + _this.config.elementClass + 'media_display li a'), function (index, content) {
-                $(content).html().replace(/<img.*?src="(.*?)"[^>]*>/ig, function (a, b) {
-                    src += b + ',';
-                });
-                $(content).html().replace(/<video.*?src="(.*?)"[^>]*>/ig, function (a, b) {
-                    src += b + ',';
-                });
-                $(content).html().replace(/<a.*?href="(.*?)"[^>]*>/ig, function (a, b) {
-                    src += b + ',';
-                });
+            var urls = $.map($('.' + _this.config.elementClass + 'media_display li'), function (content, index) {
+                return $(content).find('[data-url]').first().data('url');
             });
+
+            var src = urls.join(',');
 
             var reg = new RegExp(_this.config.rootPath, 'g');//g,表示全部替换。
 
             var srcs = src.replace(reg, '');
 
-            $('.' + _this.config.elementClass).val(srcs.substring(0, srcs.length - 1));
+            $('.' + _this.config.elementClass).val(srcs);
         };
         // 获取预览区媒体数量
         MediaSelector.prototype.getFileNumber = function () {
@@ -618,6 +645,76 @@
             result = 'other';
             return result;
         };
+        // 打开新窗口
+        MediaSelector.prototype.openNewWindow = function (url) {
+            var link = $("<a><span> </span></a>").attr("href", url).attr("target", "_blank");
+            $("body").append(link);
+            link[0].click();
+            link.remove();
+        }
+        // 预览视频
+        MediaSelector.prototype.previewVideo = function (url) {
+            var tips = this.lang.trans('preview_video_unsupported');
+            layer.open({
+                type: 1,
+                shade: 0.2,
+                offset: 'auto',
+                area: ["500px", "500px"],
+                shadeClose: true,
+                skin: 'layer-preview-video',
+                title: false,
+                move: '.layui-layer-content',
+                content: '<video src="' + url + '" width="100%" height="100%" controls autoplay>' + tips + '</video>'
+            })
+        }
+        // 预览音频
+        MediaSelector.prototype.previewAudio = function (url) {
+            var tips = this.lang.trans('preview_audio_unsupported');
+            layer.open({
+                type: 1,
+                shade: 0.2,
+                shadeClose: true,
+                resize: false,
+                title: false,
+                maxmin: false,
+                skin: 'layer-preview-audio',
+                content: '<audio src="' + url + '" controls autoplay>' + tips + '</audio>'
+            });
+        }
+        // 预览PowerPoint
+        MediaSelector.prototype.previewPowerpoint = function (url) {
+            this.openNewWindow(url)
+        }
+        // 预览代码
+        MediaSelector.prototype.previewCode = function (url) {
+            layer.open({
+                type: 2,
+                shade: 0.2,
+                shadeClose: true,
+                title: this.langs.preview,
+                skin: 'layer-preview-code',
+                content: url
+            });
+        }
+        // 预览压缩包
+        MediaSelector.prototype.previewZip = function (url) {
+            this.openNewWindow(url)
+        }
+        // 预览文本
+        MediaSelector.prototype.previewText = function (url) {
+            layer.open({
+                type: 2,
+                shade: 0.2,
+                shadeClose: true,
+                title: this.langs.preview,
+                skin: 'layer-preview-text',
+                content: url
+            });
+        }
+        // 预览其他
+        MediaSelector.prototype.previewOther = function (url) {
+            this.openNewWindow(url)
+        }
         window.MediaSelector = MediaSelector;
     }
 )();
