@@ -162,6 +162,7 @@
         layer.open({
             type: 2,
             shade: 0.2,
+            area: ["800px", "500px"],
             shadeClose: true,
             title: lang.preview,
             skin: 'layer-preview-powerpoint',
