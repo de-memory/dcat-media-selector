@@ -104,7 +104,7 @@ class MediaSelector extends Field
             'delete_succeeded' => __('admin.delete_succeeded'),
             'move_succeeded' => DcatMediaSelectorServiceProvider::trans('media.move_succeeded'),
             'create_succeeded' => DcatMediaSelectorServiceProvider::trans('media.create_succeeded'),
-            'upload_succeeded' => __('admin.uploader.upload_succeeded'),
+            'upload_succeeded' =>DcatMediaSelectorServiceProvider::trans('media.uploader.upload_succeeded'),
             'Q_TYPE_DENIED' => __('admin.uploader.Q_TYPE_DENIED'),
             'Q_TYPE_DENIED_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_TYPE_DENIED_1'),
             'Q_EXCEED_NUM_LIMIT' => __('admin.uploader.Q_EXCEED_NUM_LIMIT'),
