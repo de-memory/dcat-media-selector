@@ -13,6 +13,8 @@ class MediaSelector extends Field
 
     protected $selectList;
 
+    protected $useMicrosoftPreview = false;
+
     public function __construct($column, $arguments = [])
     {
         parent::__construct($column, $arguments);
@@ -64,6 +66,13 @@ class MediaSelector extends Field
     public function sortable(bool $sortable = true)
     {
         return $this->options(['sortable' => $sortable]);
+    }
+
+    public function useMicrosoftPreview(bool $useMicrosoftPreview = true)
+    {
+        $this->useMicrosoftPreview = $useMicrosoftPreview;
+
+        return $this;
     }
 
     public function render()
@@ -155,6 +164,7 @@ class MediaSelector extends Field
             'config' => $config,
             'locale' => $locale,
             'lang' => $lang,
+            'useMicrosoftPreview' => $this->useMicrosoftPreview,
         ]);
 
         return parent::render();

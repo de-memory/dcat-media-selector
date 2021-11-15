@@ -156,5 +156,19 @@
 </div>
 
 <script init="{{ $selector }}" require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }},@de-memory.dcat-media-selector">
-    new MediaSelector({!! $config !!}, '{{ $locale }}', {!! $lang !!}).init();
+    var lang = {!! $lang !!};
+    @if($useMicrosoftPreview)
+    MediaSelector.prototype.previewPowerpoint = function (url) {
+        layer.open({
+            type: 2,
+            shade: 0.2,
+            area: ["800px", "500px"],
+            shadeClose: true,
+            title: lang.preview,
+            skin: 'layer-preview-powerpoint',
+            content: 'http://view.officeapps.live.com/op/view.aspx?src=' + url
+        });
+    }
+    @endif
+    new MediaSelector({!! $config !!}, '{{ $locale }}', lang).init();
 </script>
