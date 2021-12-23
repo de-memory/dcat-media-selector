@@ -109,6 +109,7 @@ class MediaSelector extends Field
             'Q_TYPE_DENIED_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_TYPE_DENIED_1'),
             'Q_EXCEED_NUM_LIMIT' => __('admin.uploader.Q_EXCEED_NUM_LIMIT'),
             'Q_EXCEED_NUM_LIMIT_1' => DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_NUM_LIMIT_1'),
+            'Q_EXCEED_SIZE_LIMIT'=>  DcatMediaSelectorServiceProvider::trans('media.uploader.Q_EXCEED_SIZE_LIMIT'),
             'preview_video_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_video.unsupported'),
             'preview_audio_unsupported' => DcatMediaSelectorServiceProvider::trans('media.preview_audio.unsupported'),
         ];
