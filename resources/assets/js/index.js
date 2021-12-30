@@ -438,7 +438,11 @@
                         Dcat.success(_this.langs.upload_succeeded);
                     },
                     error: function (XmlHttpRequest) {
-                        Dcat.error(XmlHttpRequest.responseJSON.message);
+                        if (XmlHttpRequest.status === 413){
+                            _this.onError('Q_EXCEED_SIZE_LIMIT');
+                        }else{
+                            Dcat.error(XmlHttpRequest.responseJSON.message);
+                        }
                     }
                 });
                 // 删除formData，防止重复累加
@@ -557,6 +561,9 @@
                     Dcat.error(_this.lang.trans(code, replace));
                     break;
                 case 'Q_EXCEED_NUM_LIMIT_1':
+                    Dcat.error(_this.lang.trans(code, replace));
+                    break;
+                case 'Q_EXCEED_SIZE_LIMIT':
                     Dcat.error(_this.lang.trans(code, replace));
                     break;
                 default:
