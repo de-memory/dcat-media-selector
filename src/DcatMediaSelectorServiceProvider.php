@@ -18,10 +18,9 @@ class DcatMediaSelectorServiceProvider extends ServiceProvider
 
     protected $js = [
         'js/index.js',
-        'https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js',
-        'https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js',
-        'https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-en-US.min.js',
-        'https://cdn.bootcdn.net/ajax/libs/Sortable/1.14.0/Sortable.min.js',
+        'js/bootstrap-table/bootstrap-table.min.js',
+        'js/bootstrap-table/locale/bootstrap-table-{lang}.min.js',
+        'js/sortable/Sortable.min.js',
     ];
 
     /**
