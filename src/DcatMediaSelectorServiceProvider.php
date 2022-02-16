@@ -38,13 +38,6 @@ class DcatMediaSelectorServiceProvider extends ServiceProvider
 
     public function register()
     {
-        Admin::js([
-            'https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js',
-            'https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js',
-            'https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-en-US.min.js',
-            'https://cdn.bootcdn.net/ajax/libs/Sortable/1.14.0/Sortable.min.js',
-        ]);
-
         Form::extend('mediaSelector', MediaSelector::class);
     }
 
