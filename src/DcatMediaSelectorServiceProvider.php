@@ -19,6 +19,9 @@ class DcatMediaSelectorServiceProvider extends ServiceProvider
 
     protected $js = [
         'js/index.js',
+        'js/bootstrap-table/bootstrap-table.min.js',
+        'js/bootstrap-table/locale/bootstrap-table-{lang}.min.js',
+        'js/sortable/Sortable.min.js',
     ];
 
     /**

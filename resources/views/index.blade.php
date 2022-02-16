@@ -155,7 +155,7 @@
     </div>
 </div>
 
-<script init="{{ $selector }}" require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }},@de-memory.dcat-media-selector">
+<script init="{{ $selector }}" require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }},@de-memory.dcat-media-selector?lang={{ config('app.locale') === 'en' ? 'en-US' : str_replace('_', '-', config('app.locale','en-US')) }}">
     var lang = {!! $lang !!};
     @if($useMicrosoftPreview)
     MediaSelector.prototype.previewPowerpoint = function (url) {
