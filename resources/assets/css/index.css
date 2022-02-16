@@ -1,3 +1,7 @@
+img, svg {
+    vertical-align: inherit !important;
+}
+
 .my_fa {
     display: flex;
     font-size: 30px;
@@ -12,10 +16,6 @@
 
 .media_selector_modal_button {
     margin-left: 10px !important;
-}
-
-.plupload-preview li {
-    margin-top: 5px;
 }
 
 .plupload-preview a {
@@ -60,14 +60,14 @@
     border-radius: 10px;
     background-color: skyblue;
     background-image: -webkit-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.2) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.2) 75%,
-        transparent 75%,
-        transparent
+            45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent
     );
 }
 
