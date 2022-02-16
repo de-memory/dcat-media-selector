@@ -23,6 +23,8 @@
     </div>
 </div>
 
+@include('dcat-media-selector::modal')
+
 <script require="@select-table,@select2?lang={{ config('app.locale') === 'en' ? '' : str_replace('_', '-', config('app.locale')) }},@de-memory.dcat-media-selector?lang={{ config('app.locale') === 'en' ? 'en-US' : str_replace('_', '-', config('app.locale','en-US')) }}">
 
     var langs = {!! $lang !!}, // 错误信息
