@@ -146,11 +146,6 @@
 
     var dropdownToggleButtonClass = $('.' + config.elementClass + 'more'); // 模态框更多操作按钮元素
 
-    // $('body').on('hidden.bs.modal', '.modal', function () {
-    //     $(this).removeData("bs.modal");
-    //     $('.' + config.elementClass + 'more').children().remove();
-    // });
-
     // 多媒体并且开启排序
     if (config.length > 1 && config.sortable) sortable(config);
 
@@ -462,7 +457,6 @@
 
     // Modal媒体上传事件
     $('#' + config.elementClass + 'modal_upload').change(function (e) {
-        console.log('modal_upload', $(this).val(), this)
         if ($(this).val() !== '') {
             mediaUpload(this, selectedGroupId, config, langs, 'modal');
         }
