@@ -185,8 +185,6 @@
 
         dropdownToggleButtonClass.hide(); // 隐藏更多操作
 
-        $('.' + config.elementClass + 'table').bootstrapTable('remove')
-
         $('.' + config.elementClass + 'table').bootstrapTable('destroy').bootstrapTable({
             url: '/admin/media-selector/media-list',         //请求后台的URL（*）
             method: 'get',                      //请求方式（*）

@@ -15,6 +15,7 @@ class DcatMediaSelectorServiceProvider extends ServiceProvider
 
     protected $css = [
         'css/index.css',
+        'js/bootstrap-table/bootstrap-table.css',
     ];
 
     protected $js = [
