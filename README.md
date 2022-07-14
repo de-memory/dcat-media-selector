@@ -1,12 +1,20 @@
 # dcat-admin 表单媒体资源选择器
 
-<p align="center">
-    <a href="https://packagist.org/packages/de-memory/dcat-media-selector">
-        <img src="https://img.shields.io/packagist/dt/de-memory/dcat-media-selector.svg?color=" />
-    </a> 
-    <a><img src="https://img.shields.io/badge/php-7.1+-59a9f8.svg?style=flat" /></a> 
-    <a><img src="https://img.shields.io/badge/laravel-7.29+-59a9f8.svg?style=flat" ></a>
-</p>
+[//]: # (<p align="center">)
+
+[//]: # (    <a href="https://packagist.org/packages/de-memory/dcat-media-selector">)
+
+[//]: # (        <img src="https://img.shields.io/packagist/dt/de-memory/dcat-media-selector.svg?color=" />)
+
+[//]: # (    </a> )
+
+[//]: # (    <a><img src="https://img.shields.io/badge/php-7.1+-59a9f8.svg?style=flat" /></a> )
+
+[//]: # (    <a><img src="https://img.shields.io/badge/laravel-7.29+-59a9f8.svg?style=flat" ></a>)
+
+[//]: # (</p>)
+
+![GitHub Releases](https://img.shields.io/packagist/dt/de-memory/dcat-media-selector.svg?color=?style=for-the-badge&logo=appveyor)
 
 ![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/1.png)
 ![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/2.png)
