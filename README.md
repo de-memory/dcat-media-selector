@@ -14,7 +14,7 @@
 
 [//]: # (</p>)
 
-![GitHub Releases](https://img.shields.io/packagist/dt/de-memory/dcat-media-selector.svg?color=?style=for-the-badge&logo=appveyor)
+![GitHub Releases](https://img.shields.io/packagist/dt/de-memory/dcat-media-selector.svg?color=?style=for-the-badge)
 
 ![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/1.png)
 ![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/2.png)
