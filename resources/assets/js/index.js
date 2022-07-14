@@ -386,7 +386,7 @@
                 });
             });
 
-            $('.media_selector_media_group a').click(function () {
+            $(document).on('click.mediaselector', '.media_selector_media_group a', function () {
                 selectedGroupId = $(this).attr('data-id');
                 $('.media_selector_toolbar_refresh').click();
             });
