@@ -2,7 +2,6 @@
 
 namespace DeMemory\DcatMediaSelector\Models;
 
-use Carbon\Carbon;
 use Dcat\Admin\Traits\HasDateTimeFormatter;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,10 +16,5 @@ class Media extends Model
     public function mediaGroup()
     {
         return $this->belongsTo(MediaGroup::class);
-    }
-
-    public function getCreatedAtAttribute($key)
-    {
-        return date(Carbon::DEFAULT_TO_STRING_FORMAT, $key);
     }
 }

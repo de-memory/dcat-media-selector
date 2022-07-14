@@ -1,16 +1,25 @@
 <?php
 
-use DeMemory\DcatMediaSelector\Http\Controllers;
+use DeMemory\DcatMediaSelector\Http\Controllers\GroupController;
+use DeMemory\DcatMediaSelector\Http\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('media-selector/add-group', Controllers\DcatMediaSelectorController::class . '@addGroup');
+Route::get('media-selector/table', function () {
+    return view('de-memory.dcat-media-selector::table');
+});
 
-Route::post('media-selector/media-move', Controllers\DcatMediaSelectorController::class . '@move');
+Route::get('media-selector/m-list', MediaController::class . '@list');
 
-Route::get('media-selector/media-list', Controllers\DcatMediaSelectorController::class . '@getMediaList');
+Route::post('media-selector/m-upload', MediaController::class . '@upload');
 
-Route::post('media-selector/media-upload', Controllers\DcatMediaSelectorController::class . '@upload');
+Route::post('media-selector/m-delete', MediaController::class . '@delete');
 
-Route::post('media-selector/media-delete', Controllers\DcatMediaSelectorController::class . '@delete');
+Route::post('media-selector/m-move', MediaController::class . '@move');
 
+
+Route::post('media-selector/g-add', GroupController::class . '@add');
+
+Route::post('media-selector/g-delete', GroupController::class . '@delete');
+
+Route::post('media-selector/g-edit', GroupController::class . '@edit');
 

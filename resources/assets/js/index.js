@@ -1,362 +1,630 @@
-(function () {
-    // 预览图片
-    $(document).off('click.mediaselector', '[data-action="mediaselector-preview-image"]')
-        .on('click.mediaselector', '[data-action="mediaselector-preview-image"]', function () {
-            Dcat.helpers.previewImage($(this).data('url'));
-        });
+(function (w, $) {
+    function MediaSelector(options) {
+        this.options = $.extend({
+            $el: $('.demo'),
+        }, options);
 
-    // 预览代码
-    $(document).off('click.mediaselector', '[data-action="mediaselector-preview-code"]')
-        .on('click.mediaselector', '[data-action="mediaselector-preview-code"]', function () {
-            previewCode($(this).data('url'));
-        });
-    // 预览压缩包
-    $(document).off('click.mediaselector', '[data-action="mediaselector-preview-zip"]')
-        .on('click.mediaselector', '[data-action="mediaselector-preview-zip"]', function () {
-            previewZip($(this).data('url'));
-        });
-    // 预览文本
-    $(document).off('click.mediaselector', '[data-action="mediaselector-preview-text"]')
-        .on('click.mediaselector', '[data-action="mediaselector-preview-text"]', function () {
-            previewText($(this).data('url'));
-        });
-    // 预览其他
-    $(document).off('click.mediaselector', '[data-action="mediaselector-preview-other"]')
-        .on('click.mediaselector', '[data-action="mediaselector-preview-other"]', function () {
-            previewOther($(this).data('url'));
-        });
-})();
-
-// 刷新Table
-function bootstrapTableRefresh(config) {
-    Dcat.loading();
-    $('.' + config.elementClass + 'table').bootstrapTable('refresh').bootstrapTable('hideLoading');
-}
-
-// 获取Table选中的行数据
-function bootstrapTableGetSelections(config) {
-    return $('.' + config.elementClass + 'table').bootstrapTable('getSelections');
-};
-
-// 拖动排序
-function sortable(config) {
-    if (config.sortable) {
-        new Sortable($('.' + config.elementClass + 'media_display').get(0), {
-            animation: 150,
-            ghostClass: 'blue-background-class',
-            // 结束拖拽,对input值排序
-            onEnd: function () {
-                getInputMedia(config);
-                return false;
-            },
-        });
-    }
-}
-
-// 模态框操作列
-function operateFormatter() {
-    return [
-        '<a href="javascript:;" class="btn btn-block btn-danger btn-xs chooseone"><i class="fa fa-check"></i></a>'
-    ].join('');
-}
-
-function onError(lang, code, replace = '') {
-    switch (code) {
-        case 'grid_items_selected':
-            Dcat.error(lang.trans(code));
-            break;
-        case 'Q_TYPE_DENIED':
-            Dcat.error(lang.trans(code));
-            break;
-        case 'Q_TYPE_DENIED_1':
-            Dcat.error(lang.trans(code));
-            break;
-        case 'Q_EXCEED_NUM_LIMIT':
-            Dcat.error(lang.trans(code, replace));
-            break;
-        case 'Q_EXCEED_NUM_LIMIT_1':
-            Dcat.error(lang.trans(code, replace));
-            break;
-        default:
-            Dcat.error('Error: ' + code);
-    }
-}
-
-function getFileNumber(config) {
-    return $('.' + config.elementClass + 'media_display').find('li').length;
-}
-
-function fileDisplay(data, config, langs) {
-    if (config.length === 1) {
-        $('.' + config.elementClass).val(data.data.path);
-    } else if (config.length > 1) {
-        $('.' + config.elementClass).val() ? $('.' + config.elementClass).val($('.' + config.elementClass).val() + ',' + data.data.path) : $('.' + config.elementClass).val(data.data.path);
-    }
-    var html = '<li class="list-inline-item">';
-    html += '<a href="javascript:;" title="' + langs.view + '">';
-    if (data.data.media_type === 'image') {
-        html += '<img class="img-thumbnail mediaselector-preview" src="' + data.data.url + '" data-action="mediaselector-preview-image" data-url="' + data.data.url + '">';
-    } else if (data.data.media_type === 'video') {
-        html += '<video class="img-thumbnail mediaselector-preview" src="' + data.data.url + '" data-action="mediaselector-preview-video" data-url="' + data.data.url + '"/>';
-    } else if (data.data.media_type === 'audio') {
-        html += '<i class="fa fa-file-audio-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-audio" data-url="' + data.data.url + '"></i>';
-    } else if (data.data.media_type === 'powerpoint') {
-        html += '<i class="fa fa-file-word-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-powerpoint" data-url="' + data.data.url + '"></i>';
-    } else if (data.data.media_type === 'code') {
-        html += '<i class="fa fa-file-code-o img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-code" data-url="' + data.data.url + '"></i>';
-    } else if (data.data.media_type === 'zip') {
-        html += '<div class="img-thumbnail mediaselector-preview" ><i class="fa fa-file-zip-o modal_my_fa" data-action="mediaselector-preview-zip" data-url="' + data.data.url + '"></i></div>';
-    } else if (data.data.media_type === 'text') {
-        html += '<i class="fa fa-file-text-o img-thumbnail modal_my_fa modal_my_fa mediaselector-preview" data-action="mediaselector-preview-text" data-url="' + data.data.url + '"></i>';
-    } else if (data.data.media_type === 'other') {
-        html += '<i class="fa fa-file img-thumbnail modal_my_fa mediaselector-preview" data-action="mediaselector-preview-other" data-url="' + data.data.url + '"></i>';
-    }
-    html += '</a>';
-    html += '<button type="button" class="btn btn-block btn-danger btn-xs remove_media_display">';
-    html += '<i class="fa fa-trash"></i>';
-    html += '</button>';
-    html += '</li>';
-
-    if (config.length === 1) {
-        $('.' + config.elementClass + 'media_display').html(html);
-    } else if (config.length > 1) {
-        $('.' + config.elementClass + 'media_display').append(html);
+        this.init();
     }
 
-    // 删除
-    $('.remove_media_display').on('click', function () {
-        $(this).hide().parent().remove();
-        getInputMedia(config);
-        return false;
-    });
-};
+    MediaSelector.prototype = {
+        // 初始化
+        init: function () {
+            var _this = this,
+                formId = this.options.formId,
+                config = _this.options.config,
+                value = _this.options.value,
+                inputClass = _this.options.class,
+                formIdInputClass = $('#' + formId + ' .' + inputClass);
 
-function getInputMedia(config) {
-    // 循环获取属性下面的img/video src 值
-    var urls = $.map($('.' + config.elementClass + 'media_display li'), function (content, index) {
-        return $(content).find('[data-url]').first().data('url');
-    });
+            // 获取name值后将input清空，防止叠加
+            formIdInputClass.val('');
 
-    var src = urls.join(',');
+            if (value) {
+                var arr = value.split(',');
+                for (var i in arr) {
+                    _this.fileDisplay({
+                        data: {
+                            path: arr[i],
+                            url: config.rootPath + arr[i],
+                            media_type: getFileType(arr[i].substring(arr[i].lastIndexOf('.') + 1))
+                        }
+                    });
+                }
+            }
 
-    var reg = new RegExp(config.rootPath, 'g');//g,表示全部替换。
+            _this.sortable();
 
-    var srcs = src.replace(reg, '');
+            $('#' + inputClass + '_form_upload').on('change', function (e) {
+                if ($(this).val() !== '') {
 
-    $('.' + config.elementClass).val(srcs);
-}
+                    var files = $(this)[0].files,
+                        isUpload = true;
 
-// 预览视频
-function previewVideo(url, lang) {
-    var tips = lang.trans('preview_video_unsupported');
-    layer.open({
-        type: 1,
-        shade: 0.2,
-        offset: 'auto',
-        area: ["500px", "500px"],
-        shadeClose: true,
-        skin: 'layer-preview-video',
-        title: false,
-        move: '.layui-layer-content',
-        content: '<video src="' + url + '" width="100%" height="100%" controls autoplay>' + tips + '</video>'
-    })
-}
+                    if (config.limit > 1 && _this.getFileNumber() + 1 > config.limit) {
+                        Dcat.error('对不起，已超出文件数量限制');
+                        return false;
+                    }
 
-// 预览音频
-function previewAudio(url, lang) {
-    var tips = lang.trans('preview_audio_unsupported');
-    layer.open({
-        type: 1,
-        shade: 0.2,
-        shadeClose: true,
-        resize: false,
-        title: false,
-        maxmin: false,
-        skin: 'layer-preview-audio',
-        content: '<audio src="' + url + '" controls autoplay>' + tips + '</audio>'
-    });
-}
+                    $.each(files, function (i, field) {
+                        var suffix = field.name.substring(field.name.lastIndexOf('.') + 1);
+                        if ($.inArray(getFileType(suffix), config.types) < 0) {
+                            Dcat.error('对不起，不允许选择此类型文件');
+                            isUpload = false;
+                            return false;
+                        }
+                    });
 
-// 预览PowerPoint
-function previewPowerpoint(url, config) {
-    if (config.useMicrosoftPreview) {
-        layer.open({
-            type: 2,
-            shade: 0.2,
-            area: ["800px", "500px"],
-            shadeClose: true,
-            title: lang.preview,
-            skin: 'layer-preview-powerpoint',
-            content: 'http://view.officeapps.live.com/op/view.aspx?src=' + url
-        });
-    } else {
-        this.openNewWindow(url)
-    }
-}
-
-// 预览代码
-function previewCode(url) {
-    layer.open({
-        type: 2,
-        shade: 0.2,
-        shadeClose: true,
-        title: this.langs.preview,
-        skin: 'layer-preview-code',
-        content: url
-    });
-}
-
-// 预览压缩包
-function previewZip(url) {
-    this.openNewWindow(url)
-}
-
-// 预览文本
-function previewText(url) {
-    layer.open({
-        type: 2,
-        shade: 0.2,
-        shadeClose: true,
-        title: this.langs.preview,
-        skin: 'layer-preview-text',
-        content: url
-    });
-}
-
-// 预览其他
-function previewOther(url) {
-    this.openNewWindow(url)
-}
-
-// 打开新窗口
-function openNewWindow(url) {
-    var link = $("<a><span> </span></a>").attr("href", url).attr("target", "_blank");
-    $("body").append(link);
-    link[0].click();
-    link.remove();
-}
-
-// 获取文件类型
-function getFileType(suffix) {
-    // 获取类型结果
-    var result = '';
-    // 匹配图片
-    var img_list = [
-        'bmp', 'cgm', 'djv', 'djvu', 'gif', 'ico', 'ief', 'jp2', 'jpe', 'jpeg', 'jpg', 'mac', 'pbm', 'pct', 'pgm', 'pic', 'pict',
-        'png', 'pnm', 'pnt', 'pntg', 'ppm', 'qti', 'qtif', 'ras', 'rgb', 'svg', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'
-    ];
-    // 匹配音频
-    var audio_list = ['mp3', 'wav', 'flac', '3pg', 'aa', 'aac', 'ape', 'au', 'm4a', 'mpc', 'ogg'];
-    // 匹配视频
-    var video_list = ['mp4', 'rmvb', 'flv', 'mkv', 'avi', 'wmv', 'rm', 'asf', 'mpeg'];
-    // 匹配文稿
-    var powerpoint_list = [
-        'doc', 'dot', 'docx', 'dotx', 'docm', 'dotm', 'xls', 'xlt', 'xla', 'xlsx', 'xltx', 'xlsm', 'xltm', 'xlam', 'xlsb',
-        'ppt', 'pdf', 'pot', 'pps', 'ppa', 'pptx', 'potx', 'ppsx', 'ppam', 'pptm', 'potm', 'ppsm'
-    ];
-    // 匹配代码
-    var code_list = ['php', 'js', 'java', 'python', 'ruby', 'go', 'c', 'cpp', 'sql', 'm', 'h', 'json', 'html', 'aspx'];
-    // 匹配压缩包
-    var zip_list = ['zip', 'tar', 'gz', 'rar', 'rpm'];
-    // 匹配文本
-    var text_list = ['txt', 'pac', 'log', 'md'];
-    // 无后缀返回 false
-    if (!suffix) {
-        result = false;
-        return result;
-    }
-    result = img_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'image';
-        return result;
-    }
-    result = audio_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'audio';
-        return result;
-    }
-    result = video_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'video';
-        return result;
-    }
-    result = powerpoint_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'powerpoint';
-        return result;
-    }
-    result = code_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'code';
-        return result;
-    }
-    result = zip_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'zip';
-        return result;
-    }
-    result = text_list.some(function (item) {
-        return item === suffix;
-    });
-    if (result) {
-        result = 'text';
-        return result;
-    }
-    // 其他 文件类型
-    result = 'other';
-    return result;
-}
-
-function mediaUpload(data, selectedGroupId, config, langs, whereToUpload) {
-    var formData = new FormData();
-    var files = $(data)[0].files;
-    $.each(files, function (i, field) {
-        formData.append('file', field);
-        formData.append('type', config.type);
-        formData.append('move', config.move);
-        formData.append('media_group_id', selectedGroupId);
-        formData.append('_token', Dcat.token);
-        $.ajax({
-            type: 'post', // 提交方式 get/post
-            url: '/admin/media-selector/media-upload', // 需要提交的 url
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if (data.code === 200) {
-                    if (whereToUpload === 'form') {
-                        fileDisplay(data, config, langs);
-                    } else {
+                    if (isUpload) {
+                        _this.upload(this, 'form');
                     }
                 }
-                Dcat.success(langs.upload_succeeded);
-            },
-            error: function (XmlHttpRequest) {
-                Dcat.error(XmlHttpRequest.responseJSON.message);
+
+                // 操作完成后，将其值置位空，则可以解决再次触发change事件时失效的问题
+                e.target.value = '';
+            });
+
+            $('.' + inputClass + '_form_modal_button').on('click', function () {
+                var table = '<div class="row">';
+                // 分组
+                table += _this.leftGroupHtml();
+                // 表单
+                table += _this.rightTableQueryFormHtml();
+                // 工具栏
+                table += rightTableHtml();
+                table += '</div>';
+
+                layer.open({
+                    id: 'media_selector',
+                    area: config.area,
+                    title: _this.options.label,
+                    btn: [],
+                    content: table,
+                    success: function (layero, index) {
+                        _this.list(index);
+                    }
+                });
+            });
+        },
+
+        // 预览区
+        fileDisplay: function (data) {
+            var _this = this,
+                formId = this.options.formId,
+                config = _this.options.config,
+                inputClass = this.options.class,
+                formIdInputClass = $('#' + formId + ' .' + inputClass),
+                mediaDisplayClass = $('#' + formId + ' .' + inputClass + '_media_display');
+
+            if (config.limit === 1) {
+                formIdInputClass.val(data.data.path);
+            } else if (config.limit > 1) {
+                formIdInputClass.val() ? formIdInputClass.val(formIdInputClass.val() + ',' + data.data.path) : formIdInputClass.val(data.data.path);
             }
-        });
-        // 删除formData，防止重复累加
-        formData.delete('file');
-        formData.delete('type');
-        formData.delete('move');
-        formData.delete('_token');
-        if (i === files.length - 1 && whereToUpload === 'modal') {
-            // 延迟刷新
-            setTimeout(function () {
-                bootstrapTableRefresh(config);
-            }, 500);
+
+            var html = '<li>';
+            html += '<input type="hidden" value="' + data.data.path + '">';
+            html += '<a href="' + data.data.url + '" title="' + data.data.name + '" target="_blank" class="thumbnail">';
+            html += fileDisplayHtml({media_type: data.data.media_type, url: data.data.url});
+            html += '</a>';
+            html += '<button type="button" class="btn btn-block btn-danger btn-xs remove_media_display">';
+            html += '<i class="fa fa-trash"></i>';
+            html += '</button>';
+            html += '</li>';
+
+            if (config.limit === 1) {
+                mediaDisplayClass.html(html);
+            } else if (config.limit > 1) {
+                mediaDisplayClass.append(html);
+            }
+
+            _this.getInputMedia();
+
+            // form表单删除事件
+            $('.remove_media_display').on('click', function () {
+                $(this).hide().parent().remove();
+                _this.getInputMedia();
+                return false;
+            });
+        },
+
+        // 上传
+        upload: function (data, whereToUpload) {
+            var _this = this,
+                formId = this.options.formId,
+                config = _this.options.config,
+                inputClass = _this.options.class,
+                formData = new FormData(),
+                files = $(data)[0].files;
+
+            $.each(files, function (i, field) {
+                formData.append('file', field);
+                formData.append('types', config.types);
+                formData.append('move', config.move);
+                formData.append('_token', Dcat.token);
+
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '/admin/media-selector/m-upload', // 需要提交的 url
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhr: function () {
+                        var xhr = $.ajaxSettings.xhr();
+
+                        if (xhr.upload) {
+                            xhr.upload.addEventListener('progress', function (event) {
+                                var percent = Math.floor(event.loaded / event.total * 100);
+                                if (whereToUpload === 'form') {
+                                    $('#' + formId + ' .' + inputClass + '_percent_form').text(percent + '%');
+                                } else if (whereToUpload === 'modal') {
+                                    $('.media_selector_modal_percent').text(percent + '%');
+                                }
+                            }, false);
+                        }
+
+                        return xhr;
+                    }, success: function (data) {
+                        if (whereToUpload === 'form') {
+                            $('#' + formId + ' .' + inputClass + '_percent_form').text('');
+                            _this.fileDisplay(data);
+                        } else if (whereToUpload === 'modal') {
+                            $('.media_selector_modal_percent').text('');
+                        }
+                    }, error: function (XmlHttpRequest) {
+                        if (whereToUpload === 'form') {
+                            $('#' + formId + ' .' + inputClass + '_percent_form').text('');
+                        } else if (whereToUpload === 'modal') {
+                            $('.media_selector_modal_percent').text('');
+                        }
+                        Dcat.error(XmlHttpRequest.responseJSON.message);
+                        return false;
+                    }
+                });
+
+                if (i === files.length - 1 && whereToUpload === 'modal') {
+                    // 延迟刷新
+                    setTimeout(function () {
+                        $('.media_selector_toolbar_refresh').click();
+                    }, 500);
+                }
+            });
+        },
+
+        // 排序
+        sortable: function () {
+            var _this = this,
+                formId = this.options.formId,
+                config = _this.options.config,
+                inputClass = this.options.class,
+                mediaDisplayClass = $('#' + formId + ' .' + inputClass + '_media_display');
+
+            if (config.sortable) {
+                new Sortable(mediaDisplayClass.get(0), {
+                    animation: 150,
+                    ghostClass: 'blue-background-class',
+                    // 结束拖拽,对input值排序
+                    onEnd: function () {
+                        _this.getInputMedia();
+                        return false;
+                    },
+                });
+            }
+
+        },
+
+        // 列表
+        list: function (layerIndex) {
+            var _this = this,
+                config = _this.options.config,
+                toolbarMore = $('.media_selector_toolbar_more'),
+                queryType = '',
+                btselectarr = [],
+                selectedGroupId = 0;
+
+            $.contextMenu({
+                selector: '.media_selector_media_group .menu',
+                items: {
+                    edit: {name: '编辑', icon: 'edit'},
+                    delete: {name: '删除', icon: 'delete'},
+                },
+                callback: function (key, options) {
+                    if (key === 'edit') {
+                        layer.prompt({
+                            title: '编辑',
+                            maxmin: false,
+                            value: options.$trigger.html(),
+                        }, function (value, index) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/admin/media-selector/g-edit',
+                                data: {id: options.$trigger.data('id'), name: value},
+                                datatype: 'jsonp',
+                                success: function () {
+                                    options.$trigger.html(value);
+                                    Dcat.success('更新成功');
+                                    layer.close(index);
+                                },
+                                error: function (XmlHttpRequest) {
+                                    Dcat.error(XmlHttpRequest.responseJSON.message);
+                                }
+                            });
+                        });
+                    } else if (key === 'delete') {
+                        Dcat.confirm('确认删除?', options.$trigger.html(), function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/admin/media-selector/g-delete',
+                                data: {id: options.$trigger.data('id')},
+                                datatype: 'jsonp',
+                                success: function () {
+                                    options.$trigger.remove();
+                                    Dcat.success('删除成功');
+                                },
+                                error: function (XmlHttpRequest) {
+                                    Dcat.error(XmlHttpRequest.responseJSON.message);
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+
+            $('.media_selector_table').bootstrapTable('destroy').bootstrapTable({
+                url: '/admin/media-selector/m-list',
+                toolbar: '.media_selector_toolbar', // 工具按钮用哪个容器
+                dataField: 'data',
+                classes: 'table table-collapse custom-data-table',
+                striped: true, // 是否显示行间隔色
+                pagination: true, // 是否显示分页（*）
+                sortable: true, // 是否启用排序
+                sortOrder: 'desc', // 排序方式
+                sidePagination: 'server', // 分页方式：client客户端分页，server服务端分页（*）
+                columns: [
+                    {checkbox: true},
+                    {field: 'id', title: 'ID', sortable: true, visible: false},
+                    {
+                        title: '预览', formatter: function (value, row) {
+                            var html = '<a href="' + row.url + '" title="' + row.name + '" target="_blank">';
+                            html += fileDisplayHtml(row);
+                            html += '</a>';
+                            return html;
+                        }
+                    },
+                    {field: 'media_group_name', title: '分组'},
+                    {field: 'size', title: '大小'},
+                    {field: 'file_ext', title: '后缀'},
+                    {field: 'media_type', title: '类型'},
+                    {
+                        field: 'operate', title: '操作', width: '50%',
+                        events: {
+                            'click .choose': function (e, value, row) {
+                                if ($.inArray(row.media_type, config.types) < 0) {
+                                    Dcat.error('对不起，不允许选择此类型文件');
+                                    return false;
+                                }
+
+                                if (config.limit > 1 && _this.getFileNumber() + 1 > config.limit) {
+                                    Dcat.error('对不起，已超出文件数量限制');
+                                    return false;
+                                }
+
+                                _this.fileDisplay({data: row});
+                                layer.close(layerIndex);
+                            },
+                        },
+                        formatter: [
+                            '<a href="javascript:;" class="btn btn-block btn-danger btn-xs choose"><i class="fa fa-check"></i></a>'
+                        ].join('')
+                    }
+                ],
+                queryParams: function (params) {
+                    return {
+                        page: (params.limit + params.offset) / params.limit,  // 分页索引
+                        limit: params.limit,   // 分页大小
+                        sort: params.sort, // 排序字段名
+                        order: params.order, // 排序方式:asc正序,desc倒序
+                        keyword: $('input[name="media_selector_name"]').val(),
+                        type: queryType,
+                        group_id: selectedGroupId,
+                    };
+                },
+                onLoadSuccess: function () {
+                    $.LoadingOverlay('hide');
+                },
+                onCheckAll: function (row) { // 点击全选框时触发的操作
+                    if (row.length) {
+                        $.each(row, function (i, field) {
+                            btselectarr.push(field.id);
+                        });
+                        toolbarMore.find(' .selected').html('已选择' + row.length + '项');
+                        toolbarMore.show();
+                    }
+                },
+                onUncheckAll: function () { // 取消所有
+                    btselectarr = [];
+                    toolbarMore.hide();
+                },
+                onCheck: function (row) { // 点击每一个单选框时触发的操作
+                    btselectarr.push(row.id);
+                    if (btselectarr.length >= 1) {
+                        toolbarMore.find(' .selected').html('已选择' + btselectarr.length + '项');
+                        toolbarMore.show();
+                    }
+                },
+                onUncheck: function (row) { // 取消每一个单选框时对应的操作
+                    var index = btselectarr.indexOf(row.id);
+                    if (index > -1) {
+                        btselectarr.splice(index, 1);
+                    }
+                    toolbarMore.find(' .selected').html('已选择' + btselectarr.length + '项');
+                    if (btselectarr.length <= 0) {
+                        toolbarMore.hide();
+                    }
+                },
+            });
+
+            $('.media_selector_add_group').on('click', function () {
+                layer.prompt({
+                    title: '添加',
+                    maxmin: false,
+                }, function (value, index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/media-selector/g-add',
+                        data: {name: value},
+                        datatype: 'jsonp',
+                        success: function (data) {
+                            layer.close(index);
+                            $('.media_selector_media_group').append('<a class="list-group-item list-group-item-action menu" data-toggle="list" data-id="' + data.data + '" href="javascript:;">' + value + '</a>');
+                            Dcat.success('添加成功');
+                        },
+                        error: function (XmlHttpRequest) {
+                            Dcat.error(XmlHttpRequest.responseJSON.message);
+                        }
+                    });
+                });
+            });
+
+            $('.media_selector_media_group a').click(function () {
+                selectedGroupId = $(this).attr('data-id');
+                $('.media_selector_toolbar_refresh').click();
+            });
+
+            $('.media_selector_type').select2({allowClear: true, minimumInputLength: 0});
+
+            $('.media_selector_batch_delete').click(function () {
+                Dcat.confirm('确认删除?', null, function () {
+                    Dcat.loading();
+                    var deleteId = [], deletePaths = [];
+                    var rows = $('.media_selector_table').bootstrapTable('getSelections');
+
+                    $.each(rows, function (i, row) {
+                        deleteId.push(row.id);
+                        deletePaths.push(row.path);
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/media-selector/m-delete',
+                        data: {delete_ids: deleteId, delete_paths: deletePaths},
+                        datatype: 'jsonp',
+                        success: function () {
+                            Dcat.loading(false);
+                            Dcat.success('删除成功');
+                            $('.media_selector_toolbar_refresh').click();
+                        },
+                        error: function (XmlHttpRequest) {
+                            Dcat.loading(false);
+                            Dcat.error(XmlHttpRequest.responseJSON.message);
+                        }
+                    });
+                });
+            });
+
+            $('.media_selector_batch_mobile').click(function () {
+                var rows = $('.media_selector_table').bootstrapTable('getSelections');
+                var moveId = [];
+                $.each(rows, function (i, row) {
+                    moveId.push(row.id);
+                });
+                layer.open({
+                    title: '移动',
+                    type: 1,
+                    shadeClose: true,
+                    maxmin: false,
+                    move: false,
+                    area: ['275px', '200px'],
+                    btn: ['确定', '取消'],
+                    content: _this.groupSelect(),
+                    yes: function (index) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/admin/media-selector/m-move',
+                            data: {group_id: $('#media_selector_group_id').val(), move_ids: moveId.join(',')},
+                            datatype: 'jsonp',
+                            success: function () {
+                                Dcat.success('移动成功');
+                                Dcat.loading(false);
+                                $('.media_selector_toolbar_refresh').click();
+                            },
+                            error: function (XmlHttpRequest) {
+                                Dcat.loading(false);
+                                Dcat.error(XmlHttpRequest.responseJSON.message);
+                            }
+                        });
+                        layer.close(index);
+                    }
+                });
+            });
+
+            $('.media_selector_toolbar_refresh, .media_selector_search').on('click', function () {
+                $.LoadingOverlay('show', {
+                    imageColor: '#2090ff',
+                    progressColor: '#2090ff'
+                });
+                queryType = $('.media_selector_type').select2('val');
+                btselectarr = [];
+                toolbarMore.hide();
+                $('.media_selector_table').bootstrapTable('refresh').bootstrapTable('hideLoading');
+            });
+
+            $('.media_selector_toolbar_filter').on('click', function () {
+                $('.media_selector_form').toggle();
+            });
+
+            $('.media_selector_toolbar_choose').on('click', function () {
+                var rows = $('.media_selector_table').bootstrapTable('getSelections');
+
+                if (rows.length === 0) {
+                    layer.close(layerIndex);
+                }
+
+                if (config.limit > 1 && (_this.getFileNumber() + rows.length) > config.limit) {
+                    Dcat.error('对不起，已超出文件数量限制');
+                    return false;
+                }
+
+                var result = true;
+                $.each(rows, function (i, row) {
+                    if ($.inArray(row.media_type, config.types) < 0) {
+                        result = false;
+                        return false;
+                    }
+                });
+
+                if (!result) {
+                    Dcat.error('对不起，不允许选择此类型文件');
+                    return false;
+                }
+                $.each(rows, function (i, row) {
+                    _this.fileDisplay({data: row});
+                    layer.close(layerIndex);
+                });
+
+            });
+
+            $('.media_selector_modal_upload').on('change', function () {
+                if ($(this).val() !== '') {
+
+                    var files = $(this)[0].files,
+                        isUpload = true;
+
+                    $.each(files, function (i, field) {
+                        var suffix = field.name.substring(field.name.lastIndexOf('.') + 1);
+                        if ($.inArray(getFileType(suffix), config.types) < 0) {
+                            Dcat.error('对不起，不允许选择此类型文件');
+                            isUpload = false;
+                            return false;
+                        }
+                    });
+
+                    if (isUpload) {
+                        _this.upload(this, 'modal');
+                    }
+                }
+
+                // 操作完成后，将其值置位空，则可以解决再次触发change事件时失效的问题
+                e.target.value = '';
+            });
+        },
+
+        // 获取ul li 数量
+        getFileNumber: function () {
+            var formId = this.options.formId,
+                inputClass = this.options.class;
+
+            return $('#' + formId + ' .' + inputClass + '_media_display').find('li').length;
+        },
+
+        // 获取ul li 下面的input值，赋给表单input
+        getInputMedia: function () {
+            var formId = this.options.formId,
+                inputClass = this.options.class;
+
+            var results = $.map($('#' + formId + ' .' + inputClass + '_media_display li'), function (content) {
+                return $(content).find('input').val();
+            });
+
+            $('#' + formId + ' .' + inputClass).val(results.join(','));
+        },
+
+        // 左侧分组
+        leftGroupHtml: function () {
+            var _this = this,
+                grouplist = _this.options.grouplist;
+
+            var html = '<div class="col-3 col-sm-3 border-right">';
+            html += '<button type="button" class="btn btn-primary btn-block grid-refresh btn-mini btn-outline mb-1 media_selector_add_group"><i class="feather icon-plus"></i> 添加分组</button>';
+            html += '<div class="list-group list-group-flush media_selector_media_group">';
+            html += '<a class="list-group-item list-group-item-action active" data-toggle="list" data-id="0" href="javascript:;">全部</a>';
+            for (var key1 in grouplist) {
+                html += '<a class="list-group-item list-group-item-action menu" data-toggle="list" data-id="' + key1 + '" href="javascript:;">' + grouplist[key1] + '</a>';
+            }
+            html += '</div>';
+            html += '</div>';
+
+            return html;
+        },
+
+        // 左侧表格搜索表单
+        rightTableQueryFormHtml: function () {
+            var _this = this,
+                selectList = _this.options.selectList;
+
+            var html = '<div class="col-9 col-sm-9">';
+            html += '<div class="media_selector_form border-bottom mb-1" style="display: none">';
+            html += '<div class="row">';
+            html += '<div class="filter-input col-sm-3">';
+            html += '<div class="form-group">';
+            html += '<div class="input-group input-group-sm">';
+            html += '<div class="input-group-prepend"><span class="input-group-text bg-white text-capitalize"><b>名称</b></span></div>';
+            html += '<input type="text" class="form-control" name="media_selector_name" placeholder="名称">';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="filter-input col-sm-3">';
+            html += '<div class="form-group">';
+            html += ' <div class="input-group input-group-sm">';
+            html += '<div class="input-group-prepend"><span class="input-group-text bg-white text-capitalize"><b>类型</b></span></div>';
+            html += '<select class="form-control media_selector_type" style="width: 100%;" tabIndex="-1" aria-hidden="true" data-placeholder="类型">';
+            html += '<option value=""></option>';
+            for (var key2 in selectList) {
+                html += '<option value="' + key2 + '">' + selectList[key2] + '</option>';
+            }
+            html += '</select>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="btn-group" style="height: fit-content">';
+            html += '<button type="button"  class="btn btn-primary grid-refresh btn-mini btn-sm btn-outline media_selector_search"><i class="feather icon-search"></i> 搜索</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            return html;
+        },
+
+        // 分组下拉框
+        groupSelect: function () {
+            var _this = this,
+                grouplist = _this.options.grouplist;
+
+            var html = '<div style="margin: 0 auto; width: 200px; height: 80px; text-align: center; line-height: 80px;">';
+            html += '<select id="media_selector_group_id" style="width: 100%;height: 35px">';
+            for (var key3 in grouplist) {
+                html += '<option value="' + key3 + '">' + grouplist[key3] + '</option>';
+            }
+            html += '</select>';
+            html += '</div>';
+
+            return html;
         }
-    });
-}
+    };
+
+    $.fn.MediaSelector = function (options) {
+        options = options || {};
+        options.$el = $(this);
+
+        return new MediaSelector(options);
+    };
+})(window, jQuery);

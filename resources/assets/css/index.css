@@ -1,21 +1,7 @@
-img, svg {
-    vertical-align: inherit !important;
-}
-
-.my_fa {
-    display: flex;
-    font-size: 30px;
-    justify-content: center;
-}
-
-.modal_my_fa {
-    display: flex;
-    font-size: 85px;
-    justify-content: center;
-}
-
-.media_selector_modal_button {
-    margin-left: 10px !important;
+/*表单预览区*/
+.plupload-preview li {
+    margin-top: 3px;
+    margin-right: 5px;
 }
 
 .plupload-preview a {
@@ -24,19 +10,59 @@ img, svg {
     display: block;
 }
 
+.media_selector_media_group {
+    max-height: 500px;
+    overflow: auto;
+}
+
+.media_selector_media_group::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 5px;
+}
+
+.media_selector_media_group::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    background-color: skyblue;
+    background-image: -webkit-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+    );
+}
+
+.media_selector_media_group::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #ededed;
+    border-radius: 10px;
+}
+
+/*解决Table checkbox 不对齐*/
+.media_selector_table tr td:first-child {
+    padding-left: 0;
+}
+
+.modal_my_fa {
+    display: flex;
+    font-size: 85px;
+    justify-content: center;
+}
+
 .img-thumbnail {
     width: 95px;
     height: 95px;
     object-fit: cover;
 }
 
-.modal-img-thumbnail {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-}
-
-.remove_media_display, .chooseone {
+/* 删除按钮、模态框行选择按钮*/
+.remove_media_display, .choose {
     height: 22px;
     padding: .125rem .25rem !important;
     font-size: .75rem;
@@ -44,87 +70,9 @@ img, svg {
     border-radius: .15rem;
 }
 
-.pre-scrollable1 {
-    max-height: 528px;
-    overflow: auto;
+/*分类菜单背景颜色*/
+.side-nav-active {
+    background: #2090ff !important;
+    border-radius: 0px 20px 20px 0px !important;
 }
 
-.pre-scrollable1::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 5px;
-}
-
-.pre-scrollable1::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 10px;
-    background-color: skyblue;
-    background-image: -webkit-linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.2) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 0.2) 50%,
-            rgba(255, 255, 255, 0.2) 75%,
-            transparent 75%,
-            transparent
-    );
-}
-
-.pre-scrollable1::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #ededed;
-    border-radius: 10px;
-}
-
-.dropup .dropdown-menu {
-    margin-bottom: .5rem !important;
-}
-
-.dropdown .dropdown-menu:before {
-    top: initial;
-}
-
-.mediaselector-preview {
-    cursor: pointer;
-}
-
-.layer-preview-video .layui-layer-content {
-    height: 100% !important;
-    overflow: hidden;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
-
-.layer-preview-video .layui-layer-setwin .layui-layer-close2 {
-    position: relative;
-    width: 16px;
-    height: 16px;
-    margin-left: 10px;
-    right: auto;
-    top: 3px;
-}
-
-.layer-preview-video .layui-layer-setwin .layui-layer-close2:before {
-    font-family: feather;
-    content: "\E8F6";
-    font-size: 1.1rem;
-}
-
-.layer-preview-audio.layui-layer-page {
-    background-color: rgba(0, 0, 0, 0);
-    box-shadow: 0 0 0 0 !important;
-}
-
-.layer-preview-audio.layui-layer-page .layui-layer-content {
-    padding: 0;
-    margin: 0 auto;
-    overflow: hidden;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}

@@ -1,34 +1,37 @@
 {
-    "name": "de-memory/dcat-media-selector",
-    "alias": "媒体选择器",
-    "description": "支持中英文拖动排序以及图片、视频、文稿、代码文件、压缩包、文本",
-    "type": "library",
-    "keywords": ["dcat-admin", "extension"],
-    "homepage": "https://github.com/de-memory/dcat-media-selector",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "de-memory",
-            "email": "972985083@qq.com"
-        }
-    ],
-    "require": {
-        "php": ">=7.1.0",
-        "dcat/laravel-admin": "~2.0",
-        "intervention/image": "^2.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "DeMemory\\DcatMediaSelector\\": "src/"
-        }
-    },
-    "extra": {
-        "dcat-admin": "DeMemory\\DcatMediaSelector\\DcatMediaSelectorServiceProvider",
-        "laravel": {
-            "providers": [
-                "DeMemory\\DcatMediaSelector\\DcatMediaSelectorServiceProvider"
-            ]
-        }
-    },
-    "minimum-stability": "beta"
+  "name": "de-memory/dcat-media-selector",
+  "alias": "表单媒体选择器",
+  "description": "表单媒体选择器",
+  "type": "library",
+  "keywords": [
+    "dcat-admin",
+    "extension"
+  ],
+  "homepage": "https://github.com/de-memory/dcat-media-selector",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "de-memory",
+      "email": "972985083@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "dcat/laravel-admin": "~2.0",
+    "intervention/image": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "DeMemory\\DcatMediaSelector\\": "src/"
+    }
+  },
+  "extra": {
+    "dcat-admin": "DeMemory\\DcatMediaSelector\\DcatMediaSelectorServiceProvider",
+    "laravel": {
+      "providers": [
+        "DeMemory\\DcatMediaSelector\\DcatMediaSelectorServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "beta"
 }

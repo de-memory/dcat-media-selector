@@ -12,10 +12,10 @@
 ![](https://raw.githubusercontent.com/de-memory/dcat-media-selector/master/2.png)
 
 ## 依赖
- 
-- php  | >= 7.1.0
-- dcat/laravel-admin  | >= ~2.0 
-- intervention/image  | >= ^2.5
+
+- php | >= 7.1.0
+- dcat/laravel-admin | >= ~2.0
+- intervention/image | >= ^2.5
 
 ## 安装
 
@@ -37,12 +37,6 @@ composer require de-memory/dcat-media-selector
 php artisan migrate --path=vendor/de-memory/dcat-media-selector/updates
 ```
 
-### 将根目录下面的文件同步到数据库(可以不执行。如果执行会去掉数据库已有的，根据path字段过滤)
-
-```
-php artisan dcat-media-selector:install
-```
-
 ## 更新
 
 ```
@@ -55,18 +49,19 @@ php artisan vendor:publish --tag=dcat-media-selector-assets --force
 php artisan view:clear
 ```
 
-
 ## 方法使用
 
 ```
-$form->mediaSelector('avatar1', '头像2')->required()->rules('required', [
-    'required' => '请输上传或选择封面'
-])->options([
-    'length' => 20,
-    'type' => 'blend',
-    'sortable' => true,
-    'move' => json_encode(['dir' => 'upload_files', 'fileNameIsEncrypt' => true]),
-])->help('混合多媒体选择，拖动排序。限制上传或选择20个媒体');
+用法一
+$form->mediaSelector('avatar', '头像')->area()->limit()->sortable()->move();
+用法二
+$form->mediaSelector('avatar1', '头像2')
+    ->options([
+        'area'     => ['60%', '98%'], // 弹框大小
+        'limit'    => 2, // 媒体数量
+        'sortable' => true, // 排序
+        'move'     => json_encode(['dir' => 'media', 'fileNameIsEncrypt' => true]),// 第一个参数，媒体上传路径。默认media。第二个参数，媒体名称是否加密。默认true
+    ]);
 ```
 
 ## 参数说明
@@ -74,10 +69,17 @@ $form->mediaSelector('avatar1', '头像2')->required()->rules('required', [
 ```
 /*
 |--------------------------------------------------------------------------
+| 弹框大小。默认宽['60%', '98%']
+|--------------------------------------------------------------------------
+*/
+limit(array)
+
+/*
+|--------------------------------------------------------------------------
 | 媒体选择数量。默认1
 |--------------------------------------------------------------------------
 */
-length(int)
+limit(int)
 
 /*
 |--------------------------------------------------------------------------
@@ -93,9 +95,8 @@ move(string, boolean)
 
 /*
 |--------------------------------------------------------------------------
-| 媒体选择类型。默认blend
+| 媒体选择类型。默认所有
 |--------------------------------------------------------------------------
-| blend            混合选择
 | image            图片选择
 | video            视频选择
 | audio            音频选择
@@ -105,7 +106,7 @@ move(string, boolean)
 | text             文本选择
 | other            其他选择
 */
-type(string)
+types(string)
 
 /*
 |--------------------------------------------------------------------------
@@ -135,4 +136,22 @@ https://learnku.com/docs/laravel/7.x/eloquent-mutators/7502#81e641
 
 ```
 php artisan migrate:rollback --path=vendor/de-memory/dcat-media-selector/updates
+```
+
+## 优化说明
+
+```
+新增分组右键
+
+移除 dcat-media-selector:install 命令
+
+媒体选择类型移除blend选项
+
+type修改为types。参数由string修改为array
+
+媒体弹框由modal修改为layer.open
+
+移除英文翻译文件
+
+代码优化
 ```
