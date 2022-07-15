@@ -95,12 +95,12 @@ class MediaSelector extends Field
 
         $config = array_merge(
             [
-                'rootPath'  => Storage::disk(config('admin.upload.disk'))->url(''),
-                'area'      => ['60%', '98%'],
-                'limit'     => $limit,
-                'move'      => json_encode(['dir' => 'media', 'fileNameIsEncrypt' => true]),
-                'types' => $types,
-                'sortable'  => true,
+                'rootPath' => Storage::disk(config('admin.upload.disk'))->url(''),
+                'area'     => ['60%', '98%'],
+                'limit'    => $limit,
+                'move'     => json_encode(['dir' => 'media', 'fileNameIsEncrypt' => true]),
+                'types'    => $types,
+                'sortable' => true,
             ],
             $this->options
         );
@@ -123,5 +123,4 @@ class MediaSelector extends Field
 
         return parent::render();
     }
-
 }

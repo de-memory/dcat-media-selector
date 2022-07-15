@@ -1,8 +1,6 @@
 (function (w, $) {
     function MediaSelector(options) {
-        this.options = $.extend({
-            $el: $('.demo'),
-        }, options);
+        this.options = options;
 
         this.init();
     }
@@ -11,43 +9,45 @@
         // 初始化
         init: function () {
             var _this = this,
-                formId = this.options.formId,
-                config = _this.options.config,
-                value = _this.options.value,
-                inputClass = _this.options.class,
-                formIdInputClass = $('#' + formId + ' .' + inputClass);
-
-            // 获取name值后将input清空，防止叠加
-            formIdInputClass.val('');
-
-            if (value) {
-                var arr = value.split(',');
-                for (var i in arr) {
-                    _this.fileDisplay({
-                        data: {
-                            path: arr[i],
-                            url: config.rootPath + arr[i],
-                            media_type: getFileType(arr[i].substring(arr[i].lastIndexOf('.') + 1))
-                        }
-                    });
-                }
-            }
+                id = _this.options.inputId,
+                inputId = '#' + _this.options.inputId,
+                inputValue = $(inputId).val(),
+                config = _this.options.config;
 
             _this.sortable();
 
-            $('#' + inputClass + '_form_upload').on('change', function (e) {
-                if ($(this).val() !== '') {
+            // 获取input值后将input清空，防止叠加
+            $(inputId).val('');
 
-                    var files = $(this)[0].files,
-                        isUpload = true;
+            // 给input、预览区赋值
+            if (inputValue) {
+                var arr = inputValue.split(',');
+                for (var i in arr) {
+                    var media_type = getFileType(arr[i].substring(arr[i].lastIndexOf('.') + 1));
+                    _this.fileDisplay({data: {path: arr[i], url: config.rootPath + arr[i], media_type: media_type}});
+                }
+            }
+
+            // 表单上传按钮
+            $('.form_upload_button' + id).on('click', function () {
+                $(this).prev().click();
+            });
+
+            // 表单上传文本框
+            $('.form_upload' + id).on('change', function (e) {
+                if ($(this).val() !== '') {
+                    var isUpload = true;
 
                     if (config.limit > 1 && _this.getFileNumber() + 1 > config.limit) {
                         Dcat.error('对不起，已超出文件数量限制');
                         return false;
                     }
 
-                    $.each(files, function (i, field) {
-                        var suffix = field.name.substring(field.name.lastIndexOf('.') + 1);
+                    $.each($(this)[0].files, function (i, row) {
+
+                        var suffix = row.name.substring(row.name.lastIndexOf('.') + 1);
+
+                        console.log(config.types);
                         if ($.inArray(getFileType(suffix), config.types) < 0) {
                             Dcat.error('对不起，不允许选择此类型文件');
                             isUpload = false;
@@ -58,13 +58,14 @@
                     if (isUpload) {
                         _this.upload(this, 'form');
                     }
+
                 }
 
                 // 操作完成后，将其值置位空，则可以解决再次触发change事件时失效的问题
                 e.target.value = '';
             });
 
-            $('.' + inputClass + '_form_modal_button').on('click', function () {
+            $('.form_modal_button' + id).on('click', function () {
                 var table = '<div class="row">';
                 // 分组
                 table += _this.leftGroupHtml();
@@ -90,16 +91,14 @@
         // 预览区
         fileDisplay: function (data) {
             var _this = this,
-                formId = this.options.formId,
-                config = _this.options.config,
-                inputClass = this.options.class,
-                formIdInputClass = $('#' + formId + ' .' + inputClass),
-                mediaDisplayClass = $('#' + formId + ' .' + inputClass + '_media_display');
+                id = _this.options.inputId,
+                inputId = '#' + _this.options.inputId,
+                config = _this.options.config;
 
             if (config.limit === 1) {
-                formIdInputClass.val(data.data.path);
+                $(inputId).val(data.data.path);
             } else if (config.limit > 1) {
-                formIdInputClass.val() ? formIdInputClass.val(formIdInputClass.val() + ',' + data.data.path) : formIdInputClass.val(data.data.path);
+                $(inputId).val() ? $(inputId).val($(inputId).val() + ',' + data.data.path) : $(inputId).val(data.data.path);
             }
 
             var html = '<li>';
@@ -113,9 +112,9 @@
             html += '</li>';
 
             if (config.limit === 1) {
-                mediaDisplayClass.html(html);
+                $('.media_display' + id).html(html);
             } else if (config.limit > 1) {
-                mediaDisplayClass.append(html);
+                $('.media_display' + id).append(html);
             }
 
             _this.getInputMedia();
@@ -131,14 +130,13 @@
         // 上传
         upload: function (data, whereToUpload) {
             var _this = this,
-                formId = this.options.formId,
+                id = this.options.inputId,
                 config = _this.options.config,
-                inputClass = _this.options.class,
-                formData = new FormData(),
-                files = $(data)[0].files;
+                rows = $(data)[0].files,
+                formData = new FormData();
 
-            $.each(files, function (i, field) {
-                formData.append('file', field);
+            $.each(rows, function (i, row) {
+                formData.append('file', row);
                 formData.append('types', config.types);
                 formData.append('move', config.move);
                 formData.append('_token', Dcat.token);
@@ -156,7 +154,7 @@
                             xhr.upload.addEventListener('progress', function (event) {
                                 var percent = Math.floor(event.loaded / event.total * 100);
                                 if (whereToUpload === 'form') {
-                                    $('#' + formId + ' .' + inputClass + '_percent_form').text(percent + '%');
+                                    $('.form_percent' + id).text(percent + '%');
                                 } else if (whereToUpload === 'modal') {
                                     $('.media_selector_modal_percent').text(percent + '%');
                                 }
@@ -166,14 +164,14 @@
                         return xhr;
                     }, success: function (data) {
                         if (whereToUpload === 'form') {
-                            $('#' + formId + ' .' + inputClass + '_percent_form').text('');
+                            $('.form_percent' + id).text('');
                             _this.fileDisplay(data);
                         } else if (whereToUpload === 'modal') {
                             $('.media_selector_modal_percent').text('');
                         }
                     }, error: function (XmlHttpRequest) {
                         if (whereToUpload === 'form') {
-                            $('#' + formId + ' .' + inputClass + '_percent_form').text('');
+                            $('.form_percent' + id).text('');
                         } else if (whereToUpload === 'modal') {
                             $('.media_selector_modal_percent').text('');
                         }
@@ -182,7 +180,7 @@
                     }
                 });
 
-                if (i === files.length - 1 && whereToUpload === 'modal') {
+                if (i === rows.length - 1 && whereToUpload === 'modal') {
                     // 延迟刷新
                     setTimeout(function () {
                         $('.media_selector_toolbar_refresh').click();
@@ -194,13 +192,11 @@
         // 排序
         sortable: function () {
             var _this = this,
-                formId = this.options.formId,
-                config = _this.options.config,
-                inputClass = this.options.class,
-                mediaDisplayClass = $('#' + formId + ' .' + inputClass + '_media_display');
+                id = _this.options.inputId,
+                config = _this.options.config;
 
             if (config.sortable) {
-                new Sortable(mediaDisplayClass.get(0), {
+                new Sortable($('.media_display' + id).get(0), {
                     animation: 150,
                     ghostClass: 'blue-background-class',
                     // 结束拖拽,对input值排序
@@ -386,7 +382,7 @@
                 });
             });
 
-            $(document).on('click.mediaselector', '.media_selector_media_group a', function () {
+            $(document).off('click', '.media_selector_media_group a').on('click', '.media_selector_media_group a', function () {
                 selectedGroupId = $(this).attr('data-id');
                 $('.media_selector_toolbar_refresh').click();
             });
@@ -503,7 +499,7 @@
 
             });
 
-            $('.media_selector_modal_upload').on('change', function () {
+            $('.media_selector_modal_upload').on('change', function (e) {
                 if ($(this).val() !== '') {
 
                     var files = $(this)[0].files,
@@ -530,22 +526,19 @@
 
         // 获取ul li 数量
         getFileNumber: function () {
-            var formId = this.options.formId,
-                inputClass = this.options.class;
-
-            return $('#' + formId + ' .' + inputClass + '_media_display').find('li').length;
+            return $('.media_display' + this.options.inputId).find('li').length;
         },
 
         // 获取ul li 下面的input值，赋给表单input
         getInputMedia: function () {
-            var formId = this.options.formId,
-                inputClass = this.options.class;
+            var id = this.options.inputId,
+                inputId = '#' + this.options.inputId;
 
-            var results = $.map($('#' + formId + ' .' + inputClass + '_media_display li'), function (content) {
+            var results = $.map($('.media_display' + id).children('li'), function (content) {
                 return $(content).find('input').val();
             });
 
-            $('#' + formId + ' .' + inputClass).val(results.join(','));
+            $(inputId).val(results.join(','));
         },
 
         // 左侧分组
@@ -623,7 +616,6 @@
 
     $.fn.MediaSelector = function (options) {
         options = options || {};
-        options.$el = $(this);
 
         return new MediaSelector(options);
     };

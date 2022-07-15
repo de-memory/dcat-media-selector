@@ -11,32 +11,37 @@
                    {!! $attributes !!} value="{{ $value }}">
 
             <div class="input-group-append">
-                <button class="btn btn btn-success btn-file mr-1"
-                        onclick="{{ $elementClass . '_form_upload' }}.click()">
-                    <i class="fa fa-folder-open"></i> {{ trans("admin.upload") }}
-                    <span class="{{ $elementClass }}_percent_form"></span>
-                    <input type="file" id="{{ $elementClass }}_form_upload" style="display: none;"/>
+                <input type="file" style="display: none;"/>
+
+                <button type="button" class="btn btn-success btn-file mr-1">
+                    <i class="fa fa-folder-open"></i> 上传<span></span>
                 </button>
 
-                <button type="button" class="btn btn btn-primary btn-file {{ $elementClass }}_form_modal_button">
-                    <i class="fa fa-folder-open"></i> {{ trans('admin.choose') }}
-                </button>
+                <button type="button" class="btn btn-primary btn-file"><i class="fa fa-folder-open"></i> 选择</button>
             </div>
         </div>
 
         @include('admin::form.help-block')
 
-        <ul class="d-flex flex-wrap list-inline plupload-preview {{ $elementClass }}_media_display">
-        </ul>
+        <ul class="d-flex flex-wrap list-inline plupload-preview"></ul>
     </div>
 </div>
 
-<script>
-    $().MediaSelector({
-        formId: '{{$formId}}',
+<script init="{!! $selector !!}">
+    // 上传文本框
+    $(this).next().find('input').addClass('form_upload' + id);
+    // 上传按钮
+    $(this).next().children('button').eq(0).addClass('form_upload_button' + id);
+    // 上传进度条
+    $(this).next().children('button').eq(0).find('span').addClass('form_percent' + id);
+    // 模态框按钮
+    $(this).next().children('button').eq(1).addClass('form_modal_button' + id);
+    // 预览区
+    $(this).parent().next().addClass('media_display' + id);
+
+    $('.form_upload_button' + id + ',.form_modal_button' + id).MediaSelector({
+        inputId: id,
         label: '{!! $label !!}',
-        class: '{{ $elementClass }}',
-        value: "{{$value}}",
         config: {!! $config !!},
         grouplist: {!! $grouplist !!},
         selectList: {!! $selectList !!},
