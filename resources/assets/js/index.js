@@ -47,7 +47,6 @@
 
                         var suffix = row.name.substring(row.name.lastIndexOf('.') + 1);
 
-                        console.log(config.types);
                         if ($.inArray(getFileType(suffix), config.types) < 0) {
                             Dcat.error('对不起，不允许选择此类型文件');
                             isUpload = false;
