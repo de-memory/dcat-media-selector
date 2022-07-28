@@ -3,8 +3,6 @@
 return [
     '1.0.0' => [
         'Initialize extension.',
-        'create_media_group_table.php',
-        'create_media_table.php',
     ],
 
     '1.1.0' => [
