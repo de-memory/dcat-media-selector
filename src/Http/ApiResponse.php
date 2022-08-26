@@ -1,6 +1,6 @@
 <?php
 
-namespace DeMemory\DcatMediaSelector\Helpers;
+namespace DeMemory\DcatMediaSelector\Http;
 
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;

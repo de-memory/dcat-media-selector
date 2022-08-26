@@ -1,6 +1,6 @@
 <?php
 
-namespace DeMemory\DcatMediaSelector\Helpers;
+namespace DeMemory\DcatMediaSelector\Http;
 
 use Intervention\Image\ImageManager;
 
