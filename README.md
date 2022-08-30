@@ -60,6 +60,7 @@ $form->mediaSelector('avatar1', '头像2')
     ->options([
         'area'     => ['60%', '98%'], // 弹框大小
         'limit'    => 2, // 媒体数量
+        'types'    => ['image'], // 媒体选择类型
         'sortable' => true, // 排序
         'move'     => json_encode(['dir' => 'media', 'fileNameIsEncrypt' => true]),// 第一个参数，媒体上传路径。默认media。第二个参数，媒体名称是否加密。默认true
     ]);
