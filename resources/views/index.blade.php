@@ -37,7 +37,8 @@
     // 模态框按钮
     $(this).next().children('button').eq(1).addClass('form_modal_button' + id);
     // 预览区
-    $(this).parent().next().next().addClass('media_display' + id);
+    // $(this).parent().next().next().addClass('media_display' + id);
+    $('.plupload-preview').addClass('media_display' + id);
 
     $('.form_upload_button' + id + ',.form_modal_button' + id).MediaSelector({
         inputId: id,
