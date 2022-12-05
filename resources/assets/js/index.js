@@ -55,7 +55,7 @@
                     });
 
                     if (isUpload) {
-                        _this.upload(this, 'form');
+                        _this.upload(this, 0, 'form');
                     }
 
                 }
@@ -127,7 +127,7 @@
         },
 
         // 上传
-        upload: function (data, whereToUpload) {
+        upload: function (data, groupId, whereToUpload) {
             var _this = this,
                 id = this.options.inputId,
                 config = _this.options.config,
@@ -138,6 +138,7 @@
                 formData.append('file', row);
                 formData.append('types', config.types);
                 formData.append('move', config.move);
+                formData.append('group_id', groupId);
                 formData.append('_token', Dcat.token);
 
                 $.ajax({
@@ -514,7 +515,7 @@
                     });
 
                     if (isUpload) {
-                        _this.upload(this, 'modal');
+                        _this.upload(this, selectedGroupId, 'modal');
                     }
                 }
 
@@ -544,6 +545,7 @@
         leftGroupHtml: function () {
             var _this = this,
                 grouplist = _this.options.grouplist;
+
 
             var html = '<div class="col-3 col-sm-3 border-right">';
             html += '<button type="button" class="btn btn-primary btn-block grid-refresh btn-mini btn-outline mb-1 media_selector_add_group"><i class="feather icon-plus"></i> 添加分组</button>';
@@ -598,8 +600,14 @@
 
         // 分组下拉框
         groupSelect: function () {
-            var _this = this,
-                grouplist = _this.options.grouplist;
+            var grouplist = [];
+
+            $('.media_selector_media_group a').each(function () {
+                var groupId = $(this).attr('data-id');
+                if (groupId >= 1) {
+                    grouplist[groupId] = $(this).text();
+                }
+            });
 
             var html = '<div style="margin: 0 auto; width: 200px; height: 80px; text-align: center; line-height: 80px;">';
             html += '<select id="media_selector_group_id" style="width: 100%;height: 35px">';

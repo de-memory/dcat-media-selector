@@ -71,8 +71,9 @@ class MediaController
             return $this->failed($validator->errors()->first());
         }
 
-        $file = $request->file('file');
-        $move = json_decode($request->get('move'));
+        $file         = $request->file('file');
+        $move         = json_decode($request->get('move'));
+        $mediaGroupId = $request->get('group_id', 0);
 
         $dir               = $move->dir;
         $fileNameIsEncrypt = $move->fileNameIsEncrypt;
@@ -89,16 +90,16 @@ class MediaController
 
         if ($result) {
             $data = [
-                'admin_id'   => Admin::user()->id ?? 0,
-//                'media_group_id' => $mediaGroupId,
-                'path'       => $path,
-                'file_name'  => $newName,
-                'size'       => $file->getSize(),
-                'type'       => $type,
-                'file_ext'   => $file->getClientOriginalExtension(),
-                'disk'       => config('admin.upload.disk'),
-                'meta'       => json_encode(FileUtil::metaInfo($file)),
-                'created_at' => time()
+                'admin_id'       => Admin::user()->id ?? 0,
+                'media_group_id' => $mediaGroupId,
+                'path'           => $path,
+                'file_name'      => $newName,
+                'size'           => $file->getSize(),
+                'type'           => $type,
+                'file_ext'       => $file->getClientOriginalExtension(),
+                'disk'           => config('admin.upload.disk'),
+                'meta'           => json_encode(FileUtil::metaInfo($file)),
+                'created_at'     => time()
             ];
             Media::query()->insert($data);
         }
