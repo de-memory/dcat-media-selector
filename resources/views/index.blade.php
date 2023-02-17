@@ -23,7 +23,7 @@
 
         @include('admin::form.help-block')
 
-        <ul class="d-flex flex-wrap list-inline plupload-preview"></ul>
+        <ul class="d-flex flex-wrap list-inline plupload-preview-{{ $name }}"></ul>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
     $(this).next().children('button').eq(1).addClass('form_modal_button' + id);
     // 预览区
     // $(this).parent().next().next().addClass('media_display' + id);
-    $('.plupload-preview').addClass('media_display' + id);
+    $('.plupload-preview-{{ $name }}').addClass('media_display' + id);
 
     $('.form_upload_button' + id + ',.form_modal_button' + id).MediaSelector({
         inputId: id,
