@@ -116,6 +116,7 @@ class MediaSelector extends Field
 
         $this->addVariables([
             'elementClass' => $this->normalizeElementClass((string)$this->getElementName()),
+            'limit'        => $limit,
             'config'       => $config,
             'grouplist'    => json_encode($grouplist),
             'selectList'   => json_encode($selectList),

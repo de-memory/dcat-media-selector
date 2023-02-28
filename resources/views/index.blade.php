@@ -13,7 +13,7 @@
             <div class="input-group-append">
                 <input type="file" style="display: none;" @if($limit > 1) multiple @endif >
 
-                <button type=" button" class="btn btn-success btn-file mr-1">
+                <button type="button" class="btn btn-success btn-file mr-1">
                     <i class="fa fa-folder-open"></i> 上传<span></span>
                 </button>
 
@@ -23,7 +23,7 @@
 
         @include('admin::form.help-block')
 
-        <ul class="d-flex flex-wrap list-inline plupload-preview-{{ $name }}"></ul>
+        <ul class="d-flex flex-wrap list-inline plupload-preview plupload-preview-{{ $name }}"></ul>
     </div>
 </div>
 
