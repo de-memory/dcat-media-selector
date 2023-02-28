@@ -11,9 +11,9 @@
                    {!! $attributes !!} value="{{ $value }}">
 
             <div class="input-group-append">
-                <input type="file" style="display: none;"/>
+                <input type="file" style="display: none;" @if($limit > 1) multiple @endif >
 
-                <button type="button" class="btn btn-success btn-file mr-1">
+                <button type=" button" class="btn btn-success btn-file mr-1">
                     <i class="fa fa-folder-open"></i> 上传<span></span>
                 </button>
 
