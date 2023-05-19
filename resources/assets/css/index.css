@@ -70,9 +70,3 @@
     border-radius: .15rem;
 }
 
-/*分类菜单背景颜色*/
-.side-nav-active {
-    background: #2090ff !important;
-    border-radius: 0px 20px 20px 0px !important;
-}
-
