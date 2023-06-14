@@ -115,7 +115,6 @@ class MediaSelector extends Field
         $grouplist = MediaGroup::query()->pluck('name', 'id');
 
         $this->addVariables([
-            'elementClass' => $this->normalizeElementClass((string)$this->getElementName()),
             'limit'        => $limit,
             'config'       => $config,
             'grouplist'    => json_encode($grouplist),

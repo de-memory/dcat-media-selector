@@ -1,4 +1,4 @@
-<div class="{{$viewClass['form-group']}}">
+<div class="{{$viewClass['form-group']}} {{ $class }}">
 
     <label class="{{$viewClass['label']}} control-label">{!! $label !!}</label>
 
@@ -7,7 +7,7 @@
         @include('admin::form.error')
 
         <div class="input-group">
-            <input name="{{ $name }}" class="form-control {{ $class }}" placeholder="{{ $placeholder }}"
+            <input name="{{ $name }}" class="form-control" placeholder="{{ $placeholder }}"
                    {!! $attributes !!} value="{{ $value }}">
 
             <div class="input-group-append">
@@ -23,28 +23,15 @@
 
         @include('admin::form.help-block')
 
-        <ul class="d-flex flex-wrap list-inline plupload-preview plupload-preview-{{ $name }}"></ul>
+        <ul class="d-flex flex-wrap list-inline plupload-preview"></ul>
     </div>
 </div>
 
 <script init="{!! $selector !!}">
-    // 上传文本框
-    $(this).next().find('input').addClass('form_upload' + id);
-    // 上传按钮
-    $(this).next().children('button').eq(0).addClass('form_upload_button' + id);
-    // 上传进度条
-    $(this).next().children('button').eq(0).find('span').addClass('form_percent' + id);
-    // 模态框按钮
-    $(this).next().children('button').eq(1).addClass('form_modal_button' + id);
-    // 预览区
-    // $(this).parent().next().next().addClass('media_display' + id);
-    $('.plupload-preview-{{ $name }}').addClass('media_display' + id);
-
-    $('.form_upload_button' + id + ',.form_modal_button' + id).MediaSelector({
-        inputId: id,
+    $('#' + id).MediaSelector({
         label: '{!! $label !!}',
         config: {!! $config !!},
         grouplist: {!! $grouplist !!},
         selectList: {!! $selectList !!},
-    })
+    });
 </script>

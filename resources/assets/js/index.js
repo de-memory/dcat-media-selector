@@ -9,15 +9,13 @@
         // 初始化
         init: function () {
             var _this = this,
-                id = _this.options.inputId,
-                inputId = '#' + _this.options.inputId,
-                inputValue = $(inputId).val(),
+                inputValue = $(_this.options.$el.find('input').eq(0)).val(),
                 config = _this.options.config;
 
             _this.sortable();
 
             // 获取input值后将input清空，防止叠加
-            $(inputId).val('');
+            $(_this.options.$el.find('input').eq(0)).val('');
 
             // 给input、预览区赋值
             if (inputValue) {
@@ -29,12 +27,12 @@
             }
 
             // 表单上传按钮
-            $('.form_upload_button' + id).on('click', function () {
+            _this.options.$el.find('button').eq(0).off('click').on('click', function () {
                 $(this).prev().click();
             });
 
             // 表单上传文本框
-            $('.form_upload' + id).on('change', function (e) {
+            _this.options.$el.find('input').eq(1).off('change').on('change', function (e) {
                 if ($(this).val() !== '') {
                     var isUpload = true;
 
@@ -64,7 +62,7 @@
                 e.target.value = '';
             });
 
-            $('.form_modal_button' + id).on('click', function () {
+            _this.options.$el.find('button').eq(1).off('click').on('click', function () {
                 var table = '<div class="row">';
                 // 分组
                 table += _this.leftGroupHtml();
@@ -90,14 +88,13 @@
         // 预览区
         fileDisplay: function (data) {
             var _this = this,
-                id = _this.options.inputId,
-                inputId = '#' + _this.options.inputId,
+                inputId = _this.options.$el.find('input').eq(0),
                 config = _this.options.config;
 
             if (config.limit === 1) {
-                $(inputId).val(data.data.path);
+                inputId.val(data.data.path);
             } else if (config.limit > 1) {
-                $(inputId).val() ? $(inputId).val($(inputId).val() + ',' + data.data.path) : $(inputId).val(data.data.path);
+                inputId.val() ? inputId.val(inputId.val() + ',' + data.data.path) : inputId.val(data.data.path);
             }
 
             var html = '<li>';
@@ -111,9 +108,9 @@
             html += '</li>';
 
             if (config.limit === 1) {
-                $('.media_display' + id).html(html);
+                _this.options.$el.find('ul').html(html);
             } else if (config.limit > 1) {
-                $('.media_display' + id).append(html);
+                _this.options.$el.find('ul').append(html);
             }
 
             _this.getInputMedia();
@@ -129,7 +126,6 @@
         // 上传
         upload: function (data, groupId, whereToUpload) {
             var _this = this,
-                id = this.options.inputId,
                 config = _this.options.config,
                 rows = $(data)[0].files,
                 formData = new FormData();
@@ -154,7 +150,7 @@
                             xhr.upload.addEventListener('progress', function (event) {
                                 var percent = Math.floor(event.loaded / event.total * 100);
                                 if (whereToUpload === 'form') {
-                                    $('.form_percent' + id).text(percent + '%');
+                                    _this.options.$el.find('span').text(percent + '%');
                                 } else if (whereToUpload === 'modal') {
                                     $('.media_selector_modal_percent').text(percent + '%');
                                 }
@@ -164,14 +160,14 @@
                         return xhr;
                     }, success: function (data) {
                         if (whereToUpload === 'form') {
-                            $('.form_percent' + id).text('');
+                            _this.options.$el.find('span').text('');
                             _this.fileDisplay(data);
                         } else if (whereToUpload === 'modal') {
                             $('.media_selector_modal_percent').text('');
                         }
                     }, error: function (XmlHttpRequest) {
                         if (whereToUpload === 'form') {
-                            $('.form_percent' + id).text('');
+                            _this.options.$el.find('span').text('');
                         } else if (whereToUpload === 'modal') {
                             $('.media_selector_modal_percent').text('');
                         }
@@ -192,11 +188,10 @@
         // 排序
         sortable: function () {
             var _this = this,
-                id = _this.options.inputId,
                 config = _this.options.config;
 
             if (config.sortable) {
-                new Sortable($('.media_display' + id).get(0), {
+                new Sortable(_this.options.$el.find('ul').get(0), {
                     animation: 150,
                     ghostClass: 'blue-background-class',
                     // 结束拖拽,对input值排序
@@ -526,19 +521,18 @@
 
         // 获取ul li 数量
         getFileNumber: function () {
-            return $('.media_display' + this.options.inputId).find('li').length;
+            return this.options.$el.find('ul li').length;
         },
 
         // 获取ul li 下面的input值，赋给表单input
         getInputMedia: function () {
-            var id = this.options.inputId,
-                inputId = '#' + this.options.inputId;
+            var _this = this;
 
-            var results = $.map($('.media_display' + id).children('li'), function (content) {
+            var results = $.map(_this.options.$el.find('ul').children('li'), function (content) {
                 return $(content).find('input').val();
             });
 
-            $(inputId).val(results.join(','));
+            _this.options.$el.find('input').eq(0).val(results.join(','));
         },
 
         // 左侧分组
@@ -623,7 +617,9 @@
 
     $.fn.MediaSelector = function (options) {
         options = options || {};
-
+        options = $.extend({
+            $el: $(this),
+        }, options);
         return new MediaSelector(options);
     };
 })(window, jQuery);
