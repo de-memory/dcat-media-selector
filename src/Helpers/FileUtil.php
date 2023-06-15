@@ -21,7 +21,7 @@ class FileUtil
      * @param $file | 文件流
      * @return bool|string
      */
-    public static function verifyFileType($file): bool|string
+    public static function verifyFileType($file)
     {
         $extension = \Illuminate\Support\Facades\File::guessExtension($file);
         foreach (static::$fileTypes as $type => $regex) {
