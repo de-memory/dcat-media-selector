@@ -6,7 +6,7 @@ use Intervention\Image\ImageManager;
 
 class FileUtil
 {
-    public static array $fileTypes = [
+    public static $fileTypes = [
         'image'      => 'bmp|jpg|png|tif|gif|pcx|tga|exif|fpx|svg|psd|cdr|pcd|dxf|ufo|eps|ai|raw|WMF|webp|avif|apng',
         'audio'      => 'mp3|wav|flac|3pg|aa|aac|ape|au|m4a|mpc|ogg',
         'video'      => 'mkv|rmvb|flv|mp4|avi|wmv|rm|asf|mpeg',
@@ -18,7 +18,7 @@ class FileUtil
 
     /**
      * 获取文件类型
-     * @param $file | 文件流
+     * @param $file 文件流
      * @return bool|string
      */
     public static function verifyFileType($file)
