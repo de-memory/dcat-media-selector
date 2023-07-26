@@ -146,7 +146,7 @@ function rightTableHtml() {
     html += '<span style="position: relative;">';
     html += '<label class="btn btn-success grid-refresh btn-mini btn-outline"><i class="fa fa-upload"></i> 上传';
     html += '<span class="media_selector_modal_percent"></span>';
-    html += '<input type="file" class="media_selector_modal_upload" style="display: none;">';
+    html += '<input type="file" class="media_selector_modal_upload" style="display: none;" multiple>';
     html += '</label>';
     html += '</span>';
     html += '</div>';
