@@ -470,7 +470,7 @@
                     layer.close(layerIndex);
                 }
 
-                if (config.limit > 1 && (_this.getFileNumber() + rows.length) > config.limit) {
+                if (_this.getFileNumber() + rows.length > config.limit) {
                     Dcat.error('对不起，已超出文件数量限制');
                     return false;
                 }
