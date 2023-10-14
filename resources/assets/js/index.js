@@ -22,7 +22,8 @@
                 var arr = inputValue.split(',');
                 for (var i in arr) {
                     var media_type = getFileType(arr[i].substring(arr[i].lastIndexOf('.') + 1));
-                    _this.fileDisplay({data: {path: arr[i], url: config.rootPath + arr[i], media_type: media_type}});
+                    let url = arr[i].indexOf('http') === 0 ? arr[i] : config.rootPath + arr[i];
+                    _this.fileDisplay({data: {path: arr[i], url: url, media_type: media_type}});
                 }
             }
 
