@@ -22,7 +22,8 @@
                 var arr = inputValue.split(',');
                 for (var i in arr) {
                     var media_type = getFileType(arr[i].substring(arr[i].lastIndexOf('.') + 1));
-                    _this.fileDisplay({data: {path: arr[i], url: config.rootPath + arr[i], media_type: media_type}});
+                    let url = arr[i].indexOf('http') === 0 ? arr[i] : config.rootPath + arr[i];
+                    _this.fileDisplay({data: {path: arr[i], url: url, media_type: media_type}});
                 }
             }
 
@@ -122,7 +123,12 @@
                 return false;
             });
         },
-
+        
+        // 获取前缀
+        getPrefix: function () {
+            return '/' + window.location.href.split('/')[3] + '/';
+        },
+        
         // 上传
         upload: function (data, groupId, whereToUpload) {
             var _this = this,
@@ -139,7 +145,7 @@
 
                 $.ajax({
                     type: 'post', // 提交方式 get/post
-                    url: '/admin/media-selector/m-upload', // 需要提交的 url
+                    url: _this.getPrefix() + 'media-selector/m-upload', // 需要提交的 url
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -228,7 +234,7 @@
                         }, function (value, index) {
                             $.ajax({
                                 type: 'POST',
-                                url: '/admin/media-selector/g-edit',
+                                url: _this.getPrefix() + 'media-selector/g-edit',
                                 data: {id: options.$trigger.data('id'), name: value},
                                 datatype: 'jsonp',
                                 success: function () {
@@ -245,7 +251,7 @@
                         Dcat.confirm('确认删除?', options.$trigger.html(), function () {
                             $.ajax({
                                 type: 'POST',
-                                url: '/admin/media-selector/g-delete',
+                                url: _this.getPrefix() + 'media-selector/g-delete',
                                 data: {id: options.$trigger.data('id')},
                                 datatype: 'jsonp',
                                 success: function () {
@@ -262,7 +268,7 @@
             });
 
             $('.media_selector_table').bootstrapTable('destroy').bootstrapTable({
-                url: '/admin/media-selector/m-list',
+                url: _this.getPrefix() + 'media-selector/m-list',
                 toolbar: '.media_selector_toolbar', // 工具按钮用哪个容器
                 dataField: 'data',
                 classes: 'table table-collapse custom-data-table',
@@ -362,7 +368,7 @@
                 }, function (value, index) {
                     $.ajax({
                         type: 'POST',
-                        url: '/admin/media-selector/g-add',
+                        url: _this.getPrefix() + 'media-selector/g-add',
                         data: {name: value},
                         datatype: 'jsonp',
                         success: function (data) {
@@ -396,7 +402,7 @@
                     });
                     $.ajax({
                         type: 'POST',
-                        url: '/admin/media-selector/m-delete',
+                        url: _this.getPrefix() + 'media-selector/m-delete',
                         data: {delete_ids: deleteId, delete_paths: deletePaths},
                         datatype: 'jsonp',
                         success: function () {
@@ -430,7 +436,7 @@
                     yes: function (index) {
                         $.ajax({
                             type: 'POST',
-                            url: '/admin/media-selector/m-move',
+                            url: _this.getPrefix() + 'media-selector/m-move',
                             data: {group_id: $('#media_selector_group_id').val(), move_ids: moveId.join(',')},
                             datatype: 'jsonp',
                             success: function () {
